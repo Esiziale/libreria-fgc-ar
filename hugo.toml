@@ -13,6 +13,9 @@ theme = 'blowfish'
 
 [params.homepage]
   layout = 'page'
+  
+[markup.goldmark.renderer]
+  unsafe = true
 
 [params.article]
   showDate = false
@@ -32,3 +35,8 @@ theme = 'blowfish'
   name = 'Cineforum'
   url = '/cineforum/'
   weight = 3
+  
+[[menus.main]]
+  name = 'Unisciti'
+  url = '/unisciti/'
+  weight = 4
