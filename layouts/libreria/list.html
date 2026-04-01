@@ -33,7 +33,7 @@
 .filter-row select:focus{border-color:var(--rosso)}
 .btn-reset{background:none;border:1px solid var(--bordo);color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:.5rem 1rem;cursor:pointer;transition:all .2s;margin-left:auto}
 .btn-reset:hover{border-color:var(--rosso);color:var(--rosso)}
-.filter-count{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--muted);margin-left:auto}
+.filter-count{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--muted)}
 .lib-section-label{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rosso);margin-bottom:.5rem}
 .lib-section-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--testo);margin:0 0 1.5rem}
 .book-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem}
@@ -43,7 +43,7 @@
 .book-cover img{width:100%;height:100%;object-fit:cover}
 .book-cover-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;padding:1rem}
 .book-cover-ph .ph-title{font-family:'Bebas Neue',sans-serif;font-size:.85rem;color:var(--muted);text-align:center;line-height:1.2;word-break:break-word}
-.book-cover-ph .ph-line{width:30px;height:2px;background:var(--rosso);opacity:.4}
+.book-cover-ph .ph-line{width:30px;height:2px;background:var(--rosso);opacity:.5}
 .book-badge{position:absolute;top:.5rem;right:.5rem;font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.08em;padding:2px 7px;text-transform:uppercase}
 .book-badge.si{background:#0d2b0d;color:#4a9e4a}
 .book-badge.no{background:#2b0d0d;color:#9e4a4a}
@@ -53,6 +53,91 @@
 .book-author{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--muted)}
 .book-cat{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--rosso);text-transform:uppercase;letter-spacing:.07em;margin-top:auto;padding-top:.35rem}
 .no-results{grid-column:1/-1;text-align:center;padding:4rem 2rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:.85rem}
+
+/* ── MODAL ── */
+.modal-overlay{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.75);
+  z-index:1000;
+  align-items:center;
+  justify-content:center;
+  padding:1rem;
+}
+.modal-overlay.aperto{display:flex}
+.modal{
+  background:var(--bg);
+  border:2px solid var(--testo);
+  max-width:600px;
+  width:100%;
+  max-height:90vh;
+  overflow-y:auto;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+}
+.modal-top{
+  border-bottom:3px solid var(--rosso);
+  display:flex;
+  gap:1.5rem;
+  padding:1.5rem;
+}
+.modal-cover{
+  width:120px;
+  flex-shrink:0;
+  aspect-ratio:2/3;
+  background:var(--bg3);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.modal-cover img{width:100%;height:100%;object-fit:cover}
+.modal-cover-ph{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:.5rem;padding:.75rem;
+}
+.modal-cover-ph span{font-family:'Bebas Neue',sans-serif;font-size:.9rem;color:var(--muted);text-align:center;word-break:break-word}
+.modal-cover-ph .ph-line{width:24px;height:2px;background:var(--rosso);opacity:.5}
+.modal-meta{flex:1;display:flex;flex-direction:column;gap:.4rem}
+.modal-num{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--muted)}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;line-height:1.05;color:var(--testo);margin:0}
+.modal-author{font-family:'IBM Plex Mono',monospace;font-size:.85rem;color:var(--testo2)}
+.modal-pills{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}
+.modal-pill{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border:1px solid var(--bordo);color:var(--muted)}
+.modal-pill.rosso{border-color:var(--rosso);color:var(--rosso)}
+.modal-pill.verde{background:#0d2b0d;color:#4a9e4a;border:none}
+.modal-pill.nodisp{background:#2b0d0d;color:#9e4a4a;border:none}
+.modal-body{padding:1.25rem 1.5rem;font-family:'IBM Plex Sans',sans-serif;font-size:.9rem;color:var(--testo2);line-height:1.7;flex:1}
+.modal-body p{margin:0 0 .75rem}
+.modal-body:empty::before{content:'Nessuna descrizione disponibile.';color:var(--muted);font-style:italic}
+.modal-footer{
+  padding:.75rem 1.5rem;
+  border-top:1px solid var(--bordo);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.modal-close{
+  background:var(--testo);
+  color:var(--bg);
+  border:none;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.75rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  padding:.5rem 1.25rem;
+  cursor:pointer;
+  transition:background .2s;
+}
+.modal-close:hover{background:var(--rosso)}
+.modal-link{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.7rem;
+  color:var(--muted);
+  text-decoration:underline !important;
+}
+
 @media(max-width:640px){
   .lib-hero{flex-direction:column;gap:1.5rem}
   .lib-title{font-size:2.5rem}
@@ -62,6 +147,8 @@
   .book-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
   .filter-row{flex-direction:column;align-items:stretch}
   .btn-reset,.filter-count{margin-left:0}
+  .modal-top{flex-direction:column}
+  .modal-cover{width:100%;aspect-ratio:3/1}
 }
 </style>
 
@@ -75,6 +162,7 @@ const LIBRI = [
     "categoria": {{ .Params.categoria | default "Varia" | jsonify }},
     "disponibile": {{ if .Params.disponibile }}true{{ else }}false{{ end }},
     "copertina": {{ .Params.copertina | default "" | jsonify }},
+    "descrizione": {{ .Summary | jsonify }},
     "url": {{ .Permalink | jsonify }}
   },
   {{ end }}
@@ -126,14 +214,34 @@ const LIBRI = [
   <div class="book-grid" id="griglia"></div>
 </div>
 
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="chiudiModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-top">
+      <div class="modal-cover" id="modal-cover"></div>
+      <div class="modal-meta">
+        <span class="modal-num" id="modal-num"></span>
+        <h2 class="modal-title" id="modal-title"></h2>
+        <span class="modal-author" id="modal-author"></span>
+        <div class="modal-pills" id="modal-pills"></div>
+      </div>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <a class="modal-link" id="modal-link" href="#">Pagina completa →</a>
+      <button class="modal-close" onclick="chiudiModalBtn()">Chiudi</button>
+    </div>
+  </div>
+</div>
+
 <script>
-function renderCard(b){
+function renderCard(b,i){
   const disp=b.disponibile?'si':'no';
   const dispLabel=b.disponibile?'Disponibile':'Non disponibile';
   const cover=b.copertina
     ?`<img src="${b.copertina}" alt="${b.titolo}" loading="lazy">`
     :`<div class="book-cover-ph"><div class="ph-line"></div><span class="ph-title">${b.titolo}</span><div class="ph-line"></div></div>`;
-  return `<a class="book-card" href="${b.url}">
+  return `<div class="book-card" onclick="apriModal(${i})">
     <div class="book-cover">${cover}<span class="book-badge ${disp}">${dispLabel}</span></div>
     <div class="book-info">
       <span class="book-num">#${b.numero}</span>
@@ -141,21 +249,60 @@ function renderCard(b){
       <span class="book-author">${b.autore}</span>
       <span class="book-cat">${b.categoria}</span>
     </div>
-  </a>`;
+  </div>`;
 }
+
+let risultatiCorrente = [];
+
 function filtra(){
   const q=document.getElementById('cerca').value.toLowerCase();
   const cat=document.getElementById('f-cat').value;
   const disp=document.getElementById('f-disp').value;
-  const ris=LIBRI.filter(b=>{
+  risultatiCorrente=LIBRI.filter(b=>{
     const mQ=!q||b.titolo.toLowerCase().includes(q)||b.autore.toLowerCase().includes(q);
     const mC=!cat||b.categoria===cat;
     const mD=!disp||(disp==='si'?b.disponibile:!b.disponibile);
     return mQ&&mC&&mD;
   });
-  document.getElementById('filter-count').textContent=ris.length===LIBRI.length?'':`${ris.length} risultati`;
-  document.getElementById('griglia').innerHTML=ris.length?ris.map(renderCard).join(''):'<p class="no-results">Nessun libro trovato.</p>';
+  document.getElementById('filter-count').textContent=
+    risultatiCorrente.length===LIBRI.length?'':`${risultatiCorrente.length} risultati`;
+  document.getElementById('griglia').innerHTML=
+    risultatiCorrente.length
+      ? risultatiCorrente.map((b,i)=>renderCard(b,i)).join('')
+      : '<p class="no-results">Nessun libro trovato.</p>';
 }
+
+function apriModal(i){
+  const b=risultatiCorrente[i];
+  const cover=b.copertina
+    ?`<img src="${b.copertina}" alt="${b.titolo}">`
+    :`<div class="modal-cover-ph"><div class="ph-line"></div><span>${b.titolo}</span><div class="ph-line"></div></div>`;
+  document.getElementById('modal-cover').innerHTML=cover;
+  document.getElementById('modal-num').textContent=`#${b.numero}`;
+  document.getElementById('modal-title').textContent=b.titolo;
+  document.getElementById('modal-author').textContent=b.autore;
+  document.getElementById('modal-pills').innerHTML=
+    `<span class="modal-pill rosso">${b.categoria}</span>`+
+    (b.disponibile
+      ?'<span class="modal-pill verde">Disponibile</span>'
+      :'<span class="modal-pill nodisp">Non disponibile</span>');
+  document.getElementById('modal-body').innerHTML=b.descrizione||'';
+  document.getElementById('modal-link').href=b.url;
+  document.getElementById('modal-overlay').classList.add('aperto');
+  document.body.style.overflow='hidden';
+}
+
+function chiudiModalBtn(){
+  document.getElementById('modal-overlay').classList.remove('aperto');
+  document.body.style.overflow='';
+}
+
+function chiudiModal(e){
+  if(e.target===document.getElementById('modal-overlay')) chiudiModalBtn();
+}
+
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') chiudiModalBtn(); });
+
 function resetFiltri(){
   document.getElementById('cerca').value='';
   document.getElementById('f-cat').value='';
