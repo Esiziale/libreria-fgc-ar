@@ -1,0 +1,34 @@
+baseURL = 'https://fgc-ar.netlify.app/'
+languageCode = 'it'
+defaultContentLanguage = 'it'
+title = 'FGC Arezzo'
+theme = 'blowfish'
+
+[params]
+  colorScheme = 'slate'
+  defaultAppearance = 'dark'
+  autoSwitchAppearance = true
+  enableSearch = true
+  showScrollToTop = true
+
+[params.homepage]
+  layout = 'page'
+
+[params.article]
+  showDate = false
+  showReadingTime = false
+  
+[[menus.main]]
+  name = 'Libreria'
+  url = '/libreria/'
+  weight = 1
+
+[[menus.main]]
+  name = 'Iniziative'
+  url = '/iniziative/'
+  weight = 2
+
+[[menus.main]]
+  name = 'Cineforum'
+  url = '/cineforum/'
+  weight = 3
