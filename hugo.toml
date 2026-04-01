@@ -6,7 +6,7 @@ theme = 'blowfish'
 
 [params]
   colorScheme = 'slate'
-  defaultAppearance = 'dark'
+  defaultAppearance = 'light'
   autoSwitchAppearance = true
   enableSearch = true
   showScrollToTop = true
