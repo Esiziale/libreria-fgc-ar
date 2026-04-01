@@ -1,0 +1,41 @@
+<footer style="background:var(--testo);color:var(--bg);font-family:'IBM Plex Mono',monospace;font-size:.75rem;position:relative;overflow:hidden">
+  <div style="height:4px;background:var(--rosso);width:100%"></div>
+  <div style="max-width:1200px;margin:0 auto;padding:2rem 1.5rem;display:flex;flex-wrap:wrap;gap:2rem;justify-content:space-between;align-items:flex-start">
+
+    <!-- Sinistra: nome e claim -->
+    <div style="display:flex;flex-direction:column;gap:.5rem">
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.08em;color:var(--bg)">FGC Arezzo</span>
+      <span style="color:#888;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase">Fronte della Gioventù Comunista</span>
+    </div>
+
+    <!-- Centro: link -->
+    <div style="display:flex;flex-direction:column;gap:.6rem">
+      <a href="/libreria/" style="color:#888 !important;text-decoration:none !important;letter-spacing:.08em;text-transform:uppercase;font-size:.7rem;transition:color .2s" onmouseover="this.style.color='var(--rosso)'" onmouseout="this.style.color='#888'">Libreria</a>
+      <a href="/iniziative/" style="color:#888 !important;text-decoration:none !important;letter-spacing:.08em;text-transform:uppercase;font-size:.7rem;transition:color .2s" onmouseover="this.style.color='var(--rosso)'" onmouseout="this.style.color='#888'">Iniziative</a>
+      <a href="/cineforum/" style="color:#888 !important;text-decoration:none !important;letter-spacing:.08em;text-transform:uppercase;font-size:.7rem;transition:color .2s" onmouseover="this.style.color='var(--rosso)'" onmouseout="this.style.color='#888'">Cineforum</a>
+      <a href="/unisciti/" style="color:var(--rosso) !important;text-decoration:none !important;letter-spacing:.08em;text-transform:uppercase;font-size:.7rem;transition:color .2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--rosso)'">Unisciti →</a>
+    </div>
+
+    <!-- Destra: social e sito nazionale -->
+    <div style="display:flex;flex-direction:column;gap:.75rem;align-items:flex-end">
+      <a href="https://www.instagram.com/[handle]" target="_blank" rel="noopener"
+         style="display:flex;align-items:center;gap:.5rem;color:#888 !important;text-decoration:none !important;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;transition:color .2s"
+         onmouseover="this.style.color='var(--rosso)'" onmouseout="this.style.color='#888'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        Instagram
+      </a>
+      <a href="https://www.fgcomunista.org" target="_blank" rel="noopener"
+         style="display:flex;align-items:center;gap:.5rem;color:#888 !important;text-decoration:none !important;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;transition:color .2s"
+         onmouseover="this.style.color='var(--rosso)'" onmouseout="this.style.color='#888'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        FGC Nazionale
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Copyright -->
+  <div style="border-top:1px solid #1e1e1e;padding:.75rem 1.5rem;text-align:center;color:#444;font-size:.65rem;letter-spacing:.1em">
+    © {{ now.Year }} FGC Arezzo — Tutti i contenuti sono liberamente riproducibili
+  </div>
+</footer>

@@ -98,7 +98,7 @@ const LIBRI = [
     "categoria": {{ .Params.categoria | default "Varia" | jsonify }},
     "disponibile": {{ if .Params.disponibile }}true{{ else }}false{{ end }},
     "copertina": {{ .Params.copertina | default "" | jsonify }},
-    "descrizione": {{ .Summary | jsonify }},
+    "descrizione": {{ .Summary | htmlUnescape | jsonify }},
     "url": {{ .Permalink | jsonify }}
   },
   {{ end }}
