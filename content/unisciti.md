@@ -15,7 +15,7 @@ draft: false
 <div class="unisciti-wrap">
   <p class="unisciti-eyebrow">Fronte della Gioventù Comunista di Arezzo</p>
   <p class="unisciti-intro">
-    Il FGC è l'organizzazione dei giovani che lottano per un futuro diverso — studenti, lavoratori, precari, abitanti delle periferie. Se vuoi partecipare alle nostre attività, militare con noi o semplicemente saperne di più, compila il modulo.
+    Il FGC è l'organizzazione dei giovani che lottano per un futuro diverso: studenti, lavoratori, precari e disoccupati. Se vuoi partecipare alle nostre attività, militare con noi o semplicemente saperne di più, compila il modulo.
   </p>
   <div class="form-container">
     <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScvMEzohVlCVvHNrrK1I84sTS1x59gdhOx3M-HmyYjslm-V4A/viewform?embedded=true"
