@@ -30,6 +30,8 @@ collections:
       - {label: "Orario", name: "orario", widget: "string"}
       - {label: "Descrizione", name: "body", widget: "markdown"}
       - {label: "Pubblicato", name: "draft", widget: "boolean", default: false}
+      - {label: "Immagine", name: "immagine", widget: "image", required: false}
+      - {label: "Link Instagram", name: "instagram", widget: "string", required: false}
 
   - name: "cineforum"
     label: "Cineforum"

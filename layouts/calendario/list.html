@@ -1,0 +1,320 @@
+{{ define "main" }}
+
+{{ $iniziative := (site.GetPage "iniziative").Pages }}
+{{ $cineforum  := (site.GetPage "cineforum").Pages }}
+
+<style>
+.cal-wrap{max-width:1100px;margin:0 auto;padding:0 1.5rem 4rem}
+.cal-hero{padding:2rem 0 1.5rem;border-bottom:3px solid var(--rosso);margin-bottom:2rem}
+.cal-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rosso);margin-bottom:.3rem}
+.cal-title{font-family:'Bebas Neue',sans-serif;font-size:3rem;line-height:1;color:var(--testo);margin:0}
+
+.cal-toggle{display:flex;border:2px solid var(--testo);margin-bottom:2rem}
+.cal-toggle button{flex:1;padding:.65rem 1rem;background:none;border:none;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);transition:all .2s}
+.cal-toggle button.active{background:var(--testo);color:var(--bg)}
+.cal-toggle button:not(.active):hover{background:var(--bg2);color:var(--testo)}
+
+.cal-view{display:none}
+.cal-view.active{display:block}
+
+/* LISTA */
+.mese-gruppo{margin-bottom:2.5rem}
+.mese-label{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);padding:.4rem 0;border-bottom:1px solid var(--bordo);margin-bottom:.75rem}
+.ev-item{display:flex;gap:1rem;align-items:flex-start;padding:.85rem 1rem;background:var(--bg2);border:1px solid var(--bordo);border-left:3px solid var(--bordo);margin-bottom:.5rem;text-decoration:none !important;color:inherit;transition:border-left-color .2s,transform .2s}
+.ev-item:hover{border-left-color:var(--rosso) !important;transform:translateX(3px)}
+.ev-item *{text-decoration:none !important}
+.ev-item.cineforum{border-left-color:var(--rosso)}
+.ev-data-col{min-width:48px;text-align:center;flex-shrink:0}
+.ev-giorno{font-family:'Bebas Neue',sans-serif;font-size:2rem;line-height:1;color:var(--testo)}
+.ev-mese{font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ev-sep{width:1px;background:var(--bordo);align-self:stretch;flex-shrink:0}
+.ev-body{flex:1;min-width:0}
+.ev-tipo{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.2rem}
+.ev-tipo.i{color:var(--testo)}
+.ev-tipo.c{color:var(--rosso)}
+.ev-titolo{font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:.9rem;color:var(--testo);line-height:1.3;margin-bottom:.2rem}
+.ev-meta{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--muted)}
+.no-eventi{font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--muted);text-align:center;padding:3rem;border:1px solid var(--bordo)}
+
+/* MENSILE */
+.mens-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.mens-mese{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--testo);line-height:1;text-decoration:none !important}
+.mens-btn{background:none;border:1px solid var(--bordo);color:var(--testo);font-family:'IBM Plex Mono',monospace;font-size:.7rem;padding:.4rem .85rem;cursor:pointer;letter-spacing:.08em;transition:all .2s;text-decoration:none !important}
+.mens-btn:hover{border-color:var(--rosso);color:var(--rosso) !important}
+.mens-grid{display:grid;grid-template-columns:repeat(7,1fr);border-top:2px solid var(--testo);border-left:2px solid var(--testo)}
+.mens-dow{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:.5rem .4rem;background:var(--bg2);border-right:1px solid var(--bordo);border-bottom:1px solid var(--bordo);text-align:center;text-decoration:none !important}
+.mens-cell{min-height:90px;border-right:1px solid var(--bordo);border-bottom:1px solid var(--bordo);padding:.4rem;background:var(--bg);position:relative;vertical-align:top}
+.mens-cell.altro-mese{background:var(--bg2);opacity:.5}
+.mens-cell.oggi-cell{background:var(--bg3)}
+.mens-num{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--muted);margin-bottom:.35rem;text-decoration:none !important}
+.mens-cell.oggi-cell .mens-num{color:var(--rosso);font-weight:600}
+.mens-ev{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.58rem;
+  padding:2px 5px;
+  margin-bottom:2px;
+  cursor:pointer;
+  line-height:1.35;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  text-decoration:none !important;
+  display:block;
+  transition:opacity .15s;
+  border-radius:0;
+}
+.mens-ev:hover{opacity:.8}
+.mens-ev.tipo-iniziativa{background:var(--testo);color:var(--bg) !important}
+.mens-ev.tipo-cineforum{background:var(--rosso);color:#EDE8DC !important}
+
+.mens-legenda{display:flex;gap:1.5rem;margin-top:1rem;font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.08em}
+.leg-item{display:flex;align-items:center;gap:.4rem;text-decoration:none !important}
+.leg-dot{width:10px;height:10px;flex-shrink:0}
+.leg-dot.i{background:var(--testo)}
+.leg-dot.c{background:var(--rosso)}
+
+/* POPUP */
+.cal-popup{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.65);
+  z-index:500;
+  align-items:center;justify-content:center;
+  padding:1rem;
+}
+.cal-popup.aperto{display:flex}
+.cal-popup-box{
+  background:var(--bg);
+  border:2px solid var(--testo);
+  max-width:440px;width:100%;
+  overflow:hidden;
+  animation:popIn .15s ease-out;
+}
+@keyframes popIn{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+.cal-popup-top{
+  border-bottom:3px solid var(--rosso);
+  padding:1.25rem 1.5rem 1rem;
+}
+.cal-popup-tipo{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;
+  margin-bottom:.3rem;
+}
+.cal-popup-tipo.c{color:var(--rosso)}
+.cal-popup-tipo.i{color:var(--muted)}
+.cal-popup-titolo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.9rem;line-height:1.05;
+  color:var(--testo);margin:0;
+}
+.cal-popup-body{padding:1rem 1.5rem}
+.cal-popup-riga{
+  display:flex;align-items:center;gap:.5rem;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.7rem;color:var(--muted);
+  margin-bottom:.4rem;
+}
+.cal-popup-riga::before{content:'↦';color:var(--rosso)}
+.cal-popup-foot{
+  padding:.75rem 1.5rem;
+  border-top:1px solid var(--bordo);
+  display:flex;gap:.6rem;
+  justify-content:flex-end;
+}
+.cal-popup-chiudi{
+  background:none;border:1px solid var(--bordo);
+  color:var(--muted);
+  font-family:'IBM Plex Mono',monospace;font-size:.68rem;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:.45rem 1rem;cursor:pointer;transition:all .2s;
+}
+.cal-popup-chiudi:hover{border-color:var(--testo);color:var(--testo)}
+.cal-popup-link{
+  background:var(--testo);color:var(--bg) !important;
+  font-family:'IBM Plex Mono',monospace;font-size:.68rem;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:.45rem 1rem;text-decoration:none !important;
+  display:inline-block;transition:background .2s;
+}
+.cal-popup-link:hover{background:var(--rosso) !important}
+
+@media(max-width:640px){
+  .cal-title{font-size:2.2rem}
+  .mens-cell{min-height:52px}
+  .mens-ev{display:none}
+  .mens-cell.ha-eventi::after{
+    content:'●';color:var(--rosso);
+    font-size:.45rem;position:absolute;
+    bottom:4px;left:50%;transform:translateX(-50%);
+  }
+  .cal-popup-box{max-width:100%}
+}
+</style>
+
+<script>
+const EVENTI = [
+  {{ range $iniziative }}{{ if .Params.date }}
+  {tipo:"iniziativa",titolo:{{ .Title | jsonify }},data:{{ .Params.date | time.Format "2006-01-02" | jsonify }},orario:{{ .Params.orario | default "" | jsonify }},luogo:{{ .Params.luogo | default "" | jsonify }},url:{{ .Permalink | jsonify }}},
+  {{ end }}{{ end }}
+  {{ range $cineforum }}{{ if .Params.data_proiezione }}
+  {tipo:"cineforum",titolo:{{ .Title | jsonify }},data:{{ .Params.data_proiezione | time.Format "2006-01-02" | jsonify }},orario:{{ .Params.orario | default "" | jsonify }},luogo:{{ .Params.luogo | default "" | jsonify }},url:{{ .Permalink | jsonify }}},
+  {{ end }}{{ end }}
+];
+EVENTI.sort((a,b)=>new Date(a.data)-new Date(b.data));
+
+const MESI_IT=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+const MESI_BR=['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
+const DOW=['Lun','Mar','Mer','Gio','Ven','Sab','Dom'];
+let meseCorrente=new Date().getMonth(), annoCorrente=new Date().getFullYear();
+</script>
+
+<div class="cal-wrap">
+  <div class="cal-hero">
+    <p class="cal-eyebrow">FGC Arezzo</p>
+    <h1 class="cal-title">Calendario attività</h1>
+  </div>
+
+  <div class="cal-toggle">
+    <button class="active" onclick="mostra('lista',this)">Lista cronologica</button>
+    <button onclick="mostra('mensile',this)">Calendario mensile</button>
+  </div>
+
+  <div class="cal-view active" id="view-lista">
+    <div id="lista-contenuto"></div>
+  </div>
+
+  <div class="cal-view" id="view-mensile">
+    <div class="mens-nav">
+      <button class="mens-btn" onclick="cambMese(-1)">← Prec</button>
+      <h2 class="mens-mese" id="mens-titolo"></h2>
+      <button class="mens-btn" onclick="cambMese(1)">Succ →</button>
+    </div>
+    <div class="mens-grid" id="mens-grid"></div>
+    <div class="mens-legenda">
+      <div class="leg-item"><div class="leg-dot i"></div><span>Iniziativa</span></div>
+      <div class="leg-item"><div class="leg-dot c"></div><span>Cineforum</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP -->
+<div class="cal-popup" id="cal-popup" onclick="chiudiPopup(event)">
+  <div class="cal-popup-box">
+    <div class="cal-popup-top">
+      <div class="cal-popup-tipo" id="pp-tipo"></div>
+      <h3 class="cal-popup-titolo" id="pp-titolo"></h3>
+    </div>
+    <div class="cal-popup-body">
+      <div class="cal-popup-riga" id="pp-data"></div>
+      <div class="cal-popup-riga" id="pp-orario" style="display:none"></div>
+      <div class="cal-popup-riga" id="pp-luogo" style="display:none"></div>
+    </div>
+    <div class="cal-popup-foot">
+      <button class="cal-popup-chiudi" onclick="document.getElementById('cal-popup').classList.remove('aperto')">Chiudi</button>
+      <a class="cal-popup-link" id="pp-link" href="#">Leggi di più →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function renderLista(){
+  if(!EVENTI.length){
+    document.getElementById('lista-contenuto').innerHTML='<div class="no-eventi">Nessun evento.</div>';
+    return;
+  }
+  const gruppi={};
+  EVENTI.forEach(e=>{
+    const d=new Date(e.data);
+    const k=MESI_IT[d.getMonth()]+' '+d.getFullYear();
+    if(!gruppi[k])gruppi[k]=[];
+    gruppi[k].push(e);
+  });
+  let html='';
+  for(const[label,evs]of Object.entries(gruppi)){
+    html+=`<div class="mese-gruppo"><div class="mese-label">${label}</div>`;
+    evs.forEach(e=>{
+      const d=new Date(e.data);
+      const meta=[e.orario,e.luogo].filter(Boolean).join(' · ');
+      html+=`<a class="ev-item${e.tipo==='cineforum'?' cineforum':''}" href="${e.url}">
+        <div class="ev-data-col">
+          <div class="ev-giorno">${String(d.getDate()).padStart(2,'0')}</div>
+          <div class="ev-mese">${MESI_BR[d.getMonth()]}</div>
+        </div>
+        <div class="ev-sep"></div>
+        <div class="ev-body">
+          <div class="ev-tipo ${e.tipo==='cineforum'?'c':'i'}">${e.tipo==='cineforum'?'Cineforum':'Iniziativa'}</div>
+          <div class="ev-titolo">${e.titolo}</div>
+          ${meta?`<div class="ev-meta">${meta}</div>`:''}
+        </div>
+      </a>`;
+    });
+    html+='</div>';
+  }
+  document.getElementById('lista-contenuto').innerHTML=html;
+}
+
+function renderMensile(){
+  document.getElementById('mens-titolo').textContent=MESI_IT[meseCorrente]+' '+annoCorrente;
+  const grid=document.getElementById('mens-grid');
+  grid.innerHTML=DOW.map(d=>`<div class="mens-dow">${d}</div>`).join('');
+  const primo=new Date(annoCorrente,meseCorrente,1).getDay();
+  const offset=primo===0?6:primo-1;
+  const giorniMese=new Date(annoCorrente,meseCorrente+1,0).getDate();
+  const oggi=new Date();
+  for(let i=0;i<offset;i++){
+    const prev=new Date(annoCorrente,meseCorrente,0).getDate();
+    grid.innerHTML+=`<div class="mens-cell altro-mese"><div class="mens-num">${prev-offset+i+1}</div></div>`;
+  }
+  for(let g=1;g<=giorniMese;g++){
+    const isOggi=g===oggi.getDate()&&meseCorrente===oggi.getMonth()&&annoCorrente===oggi.getFullYear();
+    const evG=EVENTI.filter(e=>{const d=new Date(e.data);return d.getDate()===g&&d.getMonth()===meseCorrente&&d.getFullYear()===annoCorrente;});
+    let h=`<div class="mens-cell${isOggi?' oggi-cell':''}${evG.length?' ha-eventi':''}"><div class="mens-num">${g}</div>`;
+    evG.forEach(e=>{
+      const breve=e.titolo.length>15?e.titolo.substring(0,13)+'…':e.titolo;
+      const d=new Date(e.data);
+      const dataFmt=`${String(d.getDate()).padStart(2,'0')} ${MESI_IT[d.getMonth()]} ${d.getFullYear()}`;
+h+=`<span class="mens-ev tipo-${e.tipo}" onclick="apriPopupIdx(${EVENTI.indexOf(e)})">${breve}</span>`;
+    });
+    h+='</div>';
+    grid.innerHTML+=h;
+  }
+  const resto=(offset+giorniMese)%7===0?0:7-(offset+giorniMese)%7;
+  for(let i=1;i<=resto;i++)grid.innerHTML+=`<div class="mens-cell altro-mese"><div class="mens-num">${i}</div></div>`;
+}
+
+function cambMese(dir){
+  meseCorrente+=dir;
+  if(meseCorrente>11){meseCorrente=0;annoCorrente++;}
+  if(meseCorrente<0){meseCorrente=11;annoCorrente--;}
+  renderMensile();
+}
+
+function apriPopupIdx(idx){
+  const e=EVENTI[idx];
+  const d=new Date(e.data);
+  const dataFmt=`${String(d.getDate()).padStart(2,'0')} ${MESI_IT[d.getMonth()]} ${d.getFullYear()}`;
+  document.getElementById('pp-tipo').textContent=e.tipo==='cineforum'?'Cineforum':'Iniziativa';
+  document.getElementById('pp-tipo').className='cal-popup-tipo '+(e.tipo==='cineforum'?'c':'i');
+  document.getElementById('pp-titolo').textContent=e.titolo;
+  document.getElementById('pp-data').textContent=dataFmt;
+  const oEl=document.getElementById('pp-orario');
+  const lEl=document.getElementById('pp-luogo');
+  oEl.style.display=e.orario?'flex':'none'; oEl.textContent=e.orario;
+  lEl.style.display=e.luogo?'flex':'none'; lEl.textContent=e.luogo;
+  document.getElementById('pp-link').href=e.url;
+  document.getElementById('cal-popup').classList.add('aperto');
+}
+
+function chiudiPopup(e){if(e.target===document.getElementById('cal-popup'))document.getElementById('cal-popup').classList.remove('aperto');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('cal-popup').classList.remove('aperto');});
+
+function mostra(id,btn){
+  document.querySelectorAll('.cal-view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.cal-toggle button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='mensile')renderMensile();
+}
+renderLista();
+</script>
+
+{{ end }}

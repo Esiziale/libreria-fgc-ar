@@ -78,6 +78,8 @@
   
   
   
+    
+  
   
     
   
@@ -85,8 +87,8 @@
   <link
     type="text/css"
     rel="stylesheet"
-    href="/css/main.bundle.min.dc8fe411dbbe7939b35fad848218bcb8e0a84ed68becff9a3964e78318b639245b2cd72cd7dc316ad515d8cbf09ad89baf3e965a447db6824deb995f9d955fb2.css"
-    integrity="sha512-3I/kEdu&#43;eTmzX62Eghi8uOCoTtaL7P&#43;aOWTngxi2OSRbLNcs19wxatUV2Mvwmtibrz6WWkR9toJN65lfnZVfsg==">
+    href="/css/main.bundle.min.5928bc57888ce0914e1577c82f43ec4064aec73cf7ba2e87b6f901acdb7a553dfbc8cbe0fedac9980875ed45bb236142a8de483da33d72116c11e712a34e1777.css"
+    integrity="sha512-WSi8V4iM4JFOFXfIL0PsQGSuxzz3ui6HtvkBrNt6VT37yMvg/trJmAh17UW7I2FCqN5IPaM9chFsEecSo04Xdw==">
 
   
   
@@ -219,6 +221,7 @@
   
   
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
   
 
   
@@ -246,7 +249,8 @@
 
 
   
-  <body class="flex flex-col h-screen m-auto leading-7 max-w-7xl px-6 sm:px-14 md:px-24 lg:px-32 text-lg bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral bf-scrollbar">
+  
+  <body class="flex flex-col h-screen m-auto leading-7 px-8 sm:px-8 md:px-8 lg:px-8 text-lg bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral bf-scrollbar">
     <div id="the-top" class="absolute flex self-center">
       <a
         class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
@@ -365,57 +369,160 @@
   </a>
 </div>
 
-      </main><footer id="site-footer" class="py-10 print:hidden">
-  
-  
-    
-  
-  <div class="flex items-center justify-between">
-    
-    
-      <p class="text-sm text-neutral-500 dark:text-neutral-400">
-          &copy;
-          2026
-          
-      </p>
-    
+      </main><style>
+.ft{
+  position:relative;
+  overflow:hidden;
+  background:#0A0A0A;
+  color:#EDE8DC;
+}
 
-    
-    
-      <p class="text-xs text-neutral-500 dark:text-neutral-400">
-        
-        
-        Powered by <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
-          href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a> &amp; <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
-          href="https://blowfish.page/" target="_blank" rel="noopener noreferrer">Blowfish</a>
-      </p>
-    
+ 
+.ft::before{
+  content:'';
+  position:absolute;
+  top:0;right:-10%;
+  width:35%;height:100%;
+  background:var(--rosso);
+  clip-path:polygon(20% 0,100% 0,100% 100%,0% 100%);
+  opacity:.08;
+  pointer-events:none;
+}
+
+ 
+.ft-top{height:4px;background:var(--rosso);width:100%}
+
+ 
+.ft-main{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:1rem;
+  padding:1.25rem 1.5rem;
+  border-bottom:1px solid #1a1a1a;
+  position:relative;z-index:1;
+}
+
+ 
+.ft-logo{
+  display:flex;align-items:center;gap:.6rem;
+  text-decoration:none !important;
+}
+.ft-logo-star{
+  color:var(--rosso);
+  font-size:1.1rem;
+  line-height:1;
+}
+.ft-logo-testo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.3rem;
+  letter-spacing:.1em;
+  color:#EDE8DC !important;
+}
+
+ 
+.ft-nav{
+  display:flex;
+  gap:0;
+  flex-wrap:wrap;
+}
+.ft-nav a{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.65rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#555 !important;
+  text-decoration:none !important;
+  padding:.3rem .75rem;
+  border-left:1px solid #1a1a1a;
+  transition:color .15s,background .15s;
+}
+.ft-nav a:first-child{border-left:none}
+.ft-nav a:hover{color:#EDE8DC !important;background:#111}
+.ft-nav a.ft-cta{color:var(--rosso) !important}
+.ft-nav a.ft-cta:hover{color:#EDE8DC !important;background:var(--rosso)}
+
+ 
+.ft-social{
+  display:flex;
+  gap:.5rem;
+  align-items:center;
+}
+.ft-social a{
+  display:flex;align-items:center;justify-content:center;
+  width:32px;height:32px;
+  border:1px solid #1e1e1e;
+  color:#555 !important;
+  text-decoration:none !important;
+  transition:all .15s;
+}
+.ft-social a:hover{border-color:var(--rosso);color:var(--rosso) !important;background:#111}
+
+ 
+.ft-copy{
+  padding:.6rem 1.5rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:.5rem;
+  position:relative;z-index:1;
+}
+.ft-copy span{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.6rem;
+  letter-spacing:.1em;
+  color:#2a2a2a;
+}
+.ft-copy a{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.6rem;
+  letter-spacing:.1em;
+  color:#2a2a2a !important;
+  text-decoration:none !important;
+  transition:color .15s;
+}
+.ft-copy a:hover{color:var(--rosso) !important}
+
+@media(max-width:640px){
+  .ft-nav{display:none}
+  .ft-main{justify-content:space-between}
+}
+</style>
+
+<footer class="ft">
+  <div class="ft-top"></div>
+
+  <div class="ft-main">
+    <a href="/" class="ft-logo">
+      <span class="ft-logo-star">★</span>
+      <span class="ft-logo-testo">FGC Arezzo</span>
+    </a>
+
+    <nav class="ft-nav">
+      <a href="/libreria/">Libreria</a>
+      <a href="/iniziative/">Iniziative</a>
+      <a href="/cineforum/">Cineforum</a>
+      <a href="/calendario/">Calendario</a>
+      <a href="/unisciti/" class="ft-cta">Unisciti →</a>
+    </nav>
+
+    <div class="ft-social">
+      <a href="https://www.instagram.com/fgc_arezzo" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="https://www.gioventucomunista.it" target="_blank" rel="noopener" aria-label="FGC Nazionale">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </a>
+    </div>
   </div>
-  
-    <script>
-      mediumZoom(document.querySelectorAll("img:not(.nozoom)"), {
-        margin: 24,
-        background: "rgba(0,0,0,0.5)",
-        scrollOffset: 0,
-      });
-    </script>
-  
-  
-  
-    <script>
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", user => {
-      if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/";
-        });
-      }
-    });
-  }
-</script>
-  
-</footer>
 
+  <div class="ft-copy">
+    <span>© 2026 FGC Arezzo — Tutti i contenuti sono liberamente riproducibili</span>
+    <a href="/privacy/">Privacy</a>
+  </div>
+</footer>
     </div>
   </body>
   

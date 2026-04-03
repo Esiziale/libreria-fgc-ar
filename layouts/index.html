@@ -1,0 +1,302 @@
+{{ define "main" }}
+
+{{/* Ultimi 6 libri dalla libreria */}}
+{{ $libri := (site.GetPage "libreria").Pages | first 6 }}
+
+{{/* Prossimi 4 eventi da iniziative e cineforum combinati, ordinati per data */}}
+{{ $iniziative := (site.GetPage "iniziative").Pages }}
+{{ $cineforum  := (site.GetPage "cineforum").Pages }}
+{{ $tutti := $iniziative | append $cineforum }}
+{{ $eventi := sort $tutti "Params.date" | first 4 }}
+
+{{/* Statistiche libreria */}}
+{{ $tot_libri := len (site.GetPage "libreria").Pages }}
+{{ $disponibili := 0 }}
+{{ range (site.GetPage "libreria").Pages }}
+  {{ if .Params.disponibile }}{{ $disponibili = add $disponibili 1 }}{{ end }}
+{{ end }}
+{{ $donatori := slice }}
+{{ range (site.GetPage "libreria").Pages }}
+  {{ with .Params.donatore }}{{ $donatori = $donatori | append . }}{{ end }}
+{{ end }}
+
+<style>
+.hp-hero{
+  background:var(--bg2);
+  border-bottom:4px solid var(--testo);
+  position:relative;overflow:hidden;
+  min-height:480px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+}
+.hp-hero::before{
+  content:'';
+  position:absolute;top:0;right:0;
+  width:55%;height:100%;
+  background:var(--rosso);
+  clip-path:polygon(18% 0,100% 0,100% 100%,0% 100%);
+  z-index:0;
+}
+.hp-hero-left{
+  padding:3rem 2rem 5rem 2rem;
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;justify-content:center;gap:1.1rem;
+}
+.hp-eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--rosso);display:flex;align-items:center;gap:.5rem;
+}
+.hp-eyebrow::before{content:'★';font-size:.7rem}
+.hp-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3.2rem,7vw,5.5rem);
+  line-height:.95;color:var(--testo);letter-spacing:.02em;
+}
+.hp-title em{color:var(--rosso);font-style:normal;display:block}
+.hp-arrow{display:flex;align-items:center;gap:.75rem;margin:-.2rem 0}
+.hp-arrow-line{height:3px;background:var(--testo);flex:1;max-width:60px}
+.hp-arrow-tip{width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-left:16px solid var(--testo)}
+.hp-desc{font-family:'IBM Plex Sans',sans-serif;font-size:.9rem;color:var(--muted);line-height:1.65;max-width:380px}
+.hp-cta{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.3rem}
+.hp-btn-p{
+  background:var(--testo);color:var(--bg);
+  font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:.7rem 1.4rem;text-decoration:none;border:2px solid var(--testo);transition:all .2s;display:inline-block;
+}
+.hp-btn-p:hover{background:var(--rosso) !important;border-color:var(--rosso) !important;color:var(--bg) !important}
+.hp-btn-s{
+  background:none;color:var(--testo);
+  font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:.7rem 1.4rem;text-decoration:none;border:2px solid var(--testo);transition:all .2s;display:inline-block;
+}
+.hp-btn-s:hover{background:var(--testo) !important;color:var(--bg) !important}
+
+/* Stat bar */
+.hp-stats{
+  position:absolute;bottom:0;left:0;right:0;
+  background:var(--testo);display:flex;z-index:3;
+}
+.hp-stat{flex:1;padding:.7rem 1rem;border-right:1px solid #1e1e1e;text-align:center}
+.hp-stat:last-child{border-right:none}
+.hs-num{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;color:var(--bg);line-height:1}
+.hs-num.r{color:var(--rosso)}
+.hs-lbl{font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:#555;margin-top:.1rem}
+
+/* Ticker */
+.hp-ticker{
+  background:var(--rosso);padding:.55rem 0;overflow:hidden;
+  border-top:2px solid var(--rosso-h,#A01010);border-bottom:2px solid var(--rosso-h,#A01010);
+}
+.hp-ticker-inner{display:flex;gap:3rem;animation:ticker 22s linear infinite;white-space:nowrap}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.hp-ticker-item{
+  font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.15em;
+  color:var(--bg);display:flex;align-items:center;gap:1rem;flex-shrink:0;
+}
+.hp-ticker-item::after{content:'★';color:rgba(0,0,0,.25);font-size:.7rem}
+
+/* Sezioni */
+.hp-section{padding:3rem 0;border-bottom:2px solid var(--bg3)}
+.hp-wrap{max-width:1100px;margin:0 auto;padding:0 1.5rem}
+.hp-sh{display:flex;align-items:baseline;gap:1.5rem;margin-bottom:1.75rem;border-bottom:3px solid var(--testo);padding-bottom:.65rem}
+.hp-sh-eye{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rosso)}
+.hp-sh-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--testo);line-height:1}
+.hp-sh-link{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;margin-left:auto;border-bottom:1px solid var(--bordo);padding-bottom:1px;transition:color .2s,border-color .2s}
+.hp-sh-link:hover{color:var(--rosso) !important;border-color:var(--rosso)}
+
+/* Libri grid */
+.hp-libri{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1rem}
+.hp-libro{background:var(--bg2);border:1px solid var(--bordo);display:flex;flex-direction:column;transition:border-color .2s,transform .2s,box-shadow .2s;cursor:pointer;text-decoration:none !important}
+.hp-libro:hover{border-color:var(--rosso) !important;transform:translateY(-3px);box-shadow:3px 3px 0 var(--rosso)}
+.hp-libro-cover{aspect-ratio:2/3;overflow:hidden;background:var(--bg3);display:flex;align-items:center;justify-content:center}
+.hp-libro-info{padding:.6rem;display:flex;flex-direction:column;gap:2px}
+.hp-libro-titolo{font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:.78rem;color:var(--testo);line-height:1.3}
+.hp-libro-autore{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--muted)}
+.hp-libro-cat{font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:var(--rosso);text-transform:uppercase;letter-spacing:.07em;margin-top:auto;padding-top:.3rem}
+
+/* Placeholder costruttivista */
+.ph-cover{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;padding:.75rem}
+.ph-line{width:28px;height:2px;opacity:.5}
+.ph-text{font-family:'Bebas Neue',sans-serif;font-size:.8rem;text-align:center;line-height:1.2;word-break:break-word}
+
+/* Eventi grid */
+.hp-eventi{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.hp-evento{
+  background:var(--bg2);border:1px solid var(--bordo);
+  border-left:4px solid var(--testo);
+  padding:1rem 1.25rem;display:flex;gap:1rem;
+  transition:border-left-color .2s,transform .2s;
+  text-decoration:none !important;color:inherit;
+}
+.hp-evento:hover{border-left-color:var(--rosso) !important;transform:translateX(3px)}
+.hp-evento.cineforum{border-left-color:var(--rosso)}
+.ev-data{min-width:42px;text-align:center}
+.ev-g{font-family:'Bebas Neue',sans-serif;font-size:2rem;line-height:1;color:var(--testo)}
+.ev-m{font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ev-sep{width:1px;background:var(--bordo);align-self:stretch;flex-shrink:0}
+.ev-body{flex:1}
+.ev-tipo{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.2rem}
+.ev-tipo.i{color:var(--testo)}
+.ev-tipo.c{color:var(--rosso)}
+.ev-titolo{font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:.85rem;color:var(--testo);line-height:1.3;margin-bottom:.2rem}
+.ev-meta{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--muted)}
+
+/* CTA band */
+.hp-cta-band{background:var(--testo);padding:3rem 0;position:relative;overflow:hidden}
+.hp-cta-band::before{
+  content:'';position:absolute;top:0;left:-5%;
+  width:40%;height:100%;
+  background:var(--rosso);
+  clip-path:polygon(0 0,80% 0,100% 100%,0 100%);
+  opacity:.15;
+}
+.hp-cta-inner{
+  max-width:1100px;margin:0 auto;padding:0 1.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:2rem;flex-wrap:wrap;position:relative;z-index:1;
+}
+.hp-cta-inner h2{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--bg);line-height:1;margin-bottom:.5rem}
+.hp-cta-inner p{font-family:'IBM Plex Sans',sans-serif;font-size:.9rem;color:#888;line-height:1.6;max-width:420px}
+.hp-cta-inner em{color:var(--rosso);font-style:normal}
+.hp-cta-btn{
+  background:var(#1A1A1A);color:var(--bg);
+  font-family:'IBM Plex Mono',monospace;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:1rem 2rem;text-decoration:none;border:2px solid var(--rosso);
+  transition:all .2s;white-space:nowrap;display:inline-block;flex-shrink:0;
+}
+.hp-cta-btn:hover{background:var(--rosso) !important;color:#EDE8DC !important}
+
+/* Palette placeholder */
+.ph0{background:#1A1A1A}.ph0 .ph-line{background:#CC1A1A}.ph0 .ph-text{color:#444}
+.ph1{background:#CC1A1A}.ph1 .ph-line{background:#EDE8DC}.ph1 .ph-text{color:#EDE8DC}
+.ph2{background:#2A1A1A}.ph2 .ph-line{background:#CC1A1A}.ph2 .ph-text{color:#555}
+.ph3{background:#0A0A0A}.ph3 .ph-line{background:#CC1A1A}.ph3 .ph-text{color:#333}
+.ph4{background:#CC1A1A}.ph4 .ph-line{background:#0A0A0A}.ph4 .ph-text{color:#0A0A0A}
+.ph5{background:#1A0A0A}.ph5 .ph-line{background:#CC1A1A}.ph5 .ph-text{color:#3A1A1A}
+
+@media(max-width:700px){
+  .hp-hero{grid-template-columns:1fr}
+  .hp-hero::before{clip-path:polygon(0 65%,100% 45%,100% 100%,0 100%);width:100%}
+  .hp-title{font-size:3.2rem}
+  .hp-eventi{grid-template-columns:1fr}
+  .hp-cta-inner{flex-direction:column}
+}
+</style>
+
+<!-- HERO -->
+<div class="hp-hero">
+  <div class="hp-hero-left">
+    <div class="hp-eyebrow">Fronte della Gioventù Comunista di Arezzo</div>
+    <h1 class="hp-title">Organizzare<br><em>la lotta.</em></h1>
+   <!-- <div class="hp-arrow"><div class="hp-arrow-line"></div><div class="hp-arrow-tip"></div></div> -->
+    <p class="hp-desc">Il FGC di Arezzo è l'organizzazione dei giovani lavoratori, studenti e precari che lottano contro il capitalismo per la costruzione della società socialista.</p>
+    <div class="hp-cta">
+      <a href="/libreria/" class="hp-btn-p">Libreria popolare →</a>
+      <a href="/unisciti/" class="hp-btn-s">Unisciti</a>
+    </div>
+    </div>
+  <div style="position:relative;z-index:2;display:flex;align-items:center;justify-content:center;">
+  <img src="/images/logo_vet.png" alt="FGC Arezzo" style="width:280px;max-width:80%;opacity:.9;filter:brightness(0) invert(1);">
+</div>
+  <div class="hp-stats">
+    <div class="hp-stat"><div class="hs-num">{{ $tot_libri }}</div><div class="hs-lbl">Libri</div></div>
+    <div class="hp-stat"><div class="hs-num r">{{ $disponibili }}</div><div class="hs-lbl">Disponibili</div></div>
+    <div class="hp-stat"><div class="hs-num">{{ len ($donatori | uniq) }}</div><div class="hs-lbl">Donatori</div></div>
+    <div class="hp-stat"><div class="hs-num">{{ len $iniziative }}</div><div class="hs-lbl">Iniziative</div></div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="hp-ticker">
+  <div class="hp-ticker-inner">
+    <span class="hp-ticker-item">Libreria Popolare</span>
+    <span class="hp-ticker-item">Cineforum</span>
+    <span class="hp-ticker-item">Iniziative</span>
+    <span class="hp-ticker-item">Organizzare le lotte</span>
+    <span class="hp-ticker-item">FGC Arezzo</span>
+    <span class="hp-ticker-item">Biblioteca Collettiva</span>
+    <span class="hp-ticker-item">Libreria Popolare</span>
+    <span class="hp-ticker-item">Cineforum</span>
+    <span class="hp-ticker-item">Iniziative</span>
+    <span class="hp-ticker-item">Organizzare le lotte</span>
+    <span class="hp-ticker-item">FGC Arezzo</span>
+    <span class="hp-ticker-item">Biblioteca Collettiva</span>
+  </div>
+</div>
+
+<!-- LIBRI -->
+<div class="hp-section">
+  <div class="hp-wrap">
+    <div class="hp-sh">
+      <span class="hp-sh-eye">Catalogo</span>
+      <h2 class="hp-sh-title">Libreria popolare</h2>
+      <a href="/libreria/" class="hp-sh-link">Vedi tutti i {{ $tot_libri }} libri →</a>
+    </div>
+    <div class="hp-libri">
+      {{ range $i, $libro := $libri }}
+      <a class="hp-libro" href="{{ .Permalink }}">
+        <div class="hp-libro-cover">
+          {{ if .Params.copertina }}
+          <img src="{{ .Params.copertina }}" alt="{{ .Title }}" loading="lazy" style="width:100%;height:100%;object-fit:cover">
+          {{ else }}
+          <div class="ph-cover ph{{ $i }}">
+            <div class="ph-line"></div>
+            <span class="ph-text">{{ .Title | truncate 20 }}</span>
+            <div class="ph-line"></div>
+          </div>
+          {{ end }}
+        </div>
+        <div class="hp-libro-info">
+          <span class="hp-libro-titolo">{{ .Title }}</span>
+          <span class="hp-libro-autore">{{ .Params.autore }}</span>
+          <span class="hp-libro-cat">{{ .Params.categoria }}</span>
+        </div>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</div>
+
+<!-- EVENTI -->
+{{ if $tutti }}
+<div class="hp-section">
+  <div class="hp-wrap">
+    <div class="hp-sh">
+      <span class="hp-sh-eye">In programma</span>
+      <h2 class="hp-sh-title">Prossimi eventi</h2>
+      <a href="/calendario/" class="hp-sh-link">Calendario completo →</a>
+    </div>
+    <div class="hp-eventi">
+      {{ range $eventi }}
+      {{ $isCineforum := eq .Section "cineforum" }}
+      <a class="hp-evento{{ if $isCineforum }} cineforum{{ end }}" href="{{ .Permalink }}">
+        <div class="ev-data">
+          <div class="ev-g">{{ with .Params.date }}{{ dateFormat "02" . }}{{ end }}{{ with .Params.data_proiezione }}{{ dateFormat "02" . }}{{ end }}</div>
+          <div class="ev-m">{{ with .Params.date }}{{ dateFormat "Jan" . }}{{ end }}{{ with .Params.data_proiezione }}{{ dateFormat "Jan" . }}{{ end }}</div>
+        </div>
+        <div class="ev-sep"></div>
+        <div class="ev-body">
+          <div class="ev-tipo{{ if $isCineforum }} c{{ else }} i{{ end }}">{{ if $isCineforum }}Cineforum{{ else }}Iniziativa{{ end }}</div>
+          <div class="ev-titolo">{{ .Title }}</div>
+          <div class="ev-meta">{{ with .Params.orario }}{{ . }}{{ end }}{{ with .Params.luogo }} · {{ . }}{{ end }}</div>
+        </div>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</div>
+{{ end }}
+
+<!-- CTA UNISCITI -->
+<div class="hp-cta-band">
+  <div class="hp-cta-inner">
+    <div>
+      <h2>Organizzare<br>le lotte.</h2>
+      <p>Il FGC è l'organizzazione dei giovani che lottano per un futuro diverso. <em>Studenti, lavoratori, precari</em> — se vuoi fare qualcosa di concreto, inizia da qui.</p>
+    </div>
+    <a href="/unisciti/" class="hp-cta-btn">Unisciti al FGC →</a>
+  </div>
+</div>
+
+{{ end }}

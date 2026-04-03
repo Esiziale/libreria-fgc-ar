@@ -4,6 +4,7 @@ defaultContentLanguage = 'it'
 title = 'FGC Arezzo'
 theme = 'blowfish'
 
+
 [params]
   colorScheme = 'slate'
   defaultAppearance = 'light'
@@ -12,7 +13,7 @@ theme = 'blowfish'
   showScrollToTop = true
 
 [params.homepage]
-  layout = 'page'
+  layout = 'custom'
   
 [markup.goldmark.renderer]
   unsafe = true
@@ -35,6 +36,11 @@ theme = 'blowfish'
   name = 'Cineforum'
   url = '/cineforum/'
   weight = 3
+
+  [[menus.main]]
+  name = 'Calendario'
+  url = '/calendario/'
+  weight = 5
   
 [[menus.main]]
   name = 'Unisciti'

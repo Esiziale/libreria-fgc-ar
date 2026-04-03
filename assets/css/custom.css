@@ -187,3 +187,82 @@ footer a { color: var(--rosso) !important; }
   h1 { font-size: 2.2rem !important; }
   h2 { font-size: 1.7rem !important; }
 }
+
+/* Sfonda il container Blowfish per homepage fullwidth */
+/* Fullwidth per sezioni hero homepage */
+.hp-hero,
+.hp-ticker,
+.hp-cta-band {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+/* Nascondi logo e instagram nell'header
+.header-title,
+header .logo,
+a[href*="instagram"] {
+  display: none !important;
+} */
+
+/* Allinea il menu al bordo sinistro */
+header nav,
+.header nav,
+.menu {
+  margin-left: 0 !important;
+  padding-left: 1.5rem !important;
+}
+
+.hp-cta {
+  margin-bottom: 10px;
+}
+
+/* Forza colori hero in entrambe le modalità */
+.hp-arrow-line { background: #0A0A0A !important; }
+.hp-arrow-tip { border-left-color: #0A0A0A !important; }
+
+.hp-cta-inner h2 { color: #EDE8DC !important; }
+.hp-cta-inner p { color: #888 !important; }
+html.dark .hp-cta-inner h2 { color: #0A0A0A !important; }
+html.dark .hp-cta-inner p { color: #0e0e0e !important; }
+/* Hero dark mode: sfondo nero, testo bianco */
+
+/* Libreria — ripristina stile costruttivista */
+.lib-title {
+  font-family: 'Bebas Neue', sans-serif !important;
+  font-size: 3.5rem !important;
+  line-height: 1 !important;
+  color: var(--testo) !important;
+}
+
+.lib-eyebrow {
+  font-size: .7rem !important;
+  line-height: 1 !important;
+}
+
+.lib-section-title {
+  font-family: 'Bebas Neue', sans-serif !important;
+  font-size: 2rem !important;
+  line-height: 1 !important;
+  color: var(--testo) !important;
+}
+
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif !important;
+  font-size: 2.4rem !important;
+  line-height: 1 !important;
+  color: var(--testo) !important;
+}
+
+/* Ripristina font libreria */
+.lib-title { font-size: 3.5rem !important; line-height: 1 !important; }
+.lib-section-title { font-size: 2rem !important; line-height: 1 !important; }
+.stat-num { font-size: 2.4rem !important; line-height: 1 !important; }
+.modal-title { font-size: 1.8rem !important; line-height: 1.05 !important; }
+
+a.ini-btn-insta { background: var(--rosso) !important; color: #EDE8DC !important; }
+a.ini-insta-badge { display: flex !important; }
+
+a.ev-item, a.ev-item * { text-decoration: none !important; }

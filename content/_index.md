@@ -1,5 +1,6 @@
 ---
 title: "FGC Arezzo"
+class: "home"
 ---
 
 Il **Fronte della Gioventù Comunista di Arezzo** è la sezione locale del FGC: l'organizzazione rivoluzionaria dei giovani lavoratori, studenti, precari e abitanti delle periferie che lottano contro il capitalismo per la costruzione della società socialista.
