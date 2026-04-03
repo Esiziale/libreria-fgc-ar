@@ -1191,11 +1191,18 @@ Sul territorio aretino portiamo avanti lotte per la scuola pubblica e gratuita, 
 .ph5{background:#1A0A0A}.ph5 .ph-line{background:#CC1A1A}.ph5 .ph-text{color:#3A1A1A}
 
 @media(max-width:700px){
-  .hp-hero{grid-template-columns:1fr}
+  .hp-hero{grid-template-columns:1fr;min-height:auto}
   .hp-hero::before{clip-path:polygon(0 65%,100% 45%,100% 100%,0 100%);width:100%}
-  .hp-title{font-size:3.2rem}
+  .hp-hero-left{padding-bottom:1.5rem}
+  .hp-stats{position:static;grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr)}
+  .hp-stat{border-right:1px solid rgba(255,255,255,.1);border-bottom:none}
+  .hp-title{font-size:2.8rem}
+  .hp-desc{max-width:100%}
   .hp-eventi{grid-template-columns:1fr}
   .hp-cta-inner{flex-direction:column}
+  .hp-wrap{padding:0 1rem}
+  .hp-section{padding:2rem 0}
+  .hp-sh-title{font-size:1.6rem}
 }
 </style>
 

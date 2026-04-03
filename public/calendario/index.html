@@ -723,14 +723,26 @@
 
 @media(max-width:640px){
   .cal-title{font-size:2.2rem}
-  .mens-cell{min-height:52px}
-  .mens-ev{display:none}
-  .mens-cell.ha-eventi::after{
-    content:'●';color:var(--rosso);
-    font-size:.45rem;position:absolute;
-    bottom:4px;left:50%;transform:translateX(-50%);
+  .cal-toggle button{min-height:44px;font-size:.8rem}
+  .mens-cell{min-height:56px;padding:.3rem .25rem}
+  .mens-num{font-size:.6rem;margin-bottom:.2rem}
+  .mens-ev{
+    font-size:0;
+    padding:0;
+    width:8px;height:8px;
+    border-radius:50%;
+    display:inline-block;
+    margin:1px 2px;
+    overflow:hidden;
+    white-space:nowrap;
+    min-height:0;
   }
+  .mens-ev.tipo-iniziativa{background:var(--testo)}
+  .mens-ev.tipo-cineforum{background:var(--rosso)}
   .cal-popup-box{max-width:100%}
+  .cal-popup-chiudi,.cal-popup-link{min-height:44px;display:inline-flex;align-items:center}
+  .ev-item{padding:.75rem .85rem}
+  .ev-giorno{font-size:1.6rem}
 }
 </style>
 

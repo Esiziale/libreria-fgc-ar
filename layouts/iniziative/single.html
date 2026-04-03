@@ -23,7 +23,12 @@
 .art-back:hover{border-color:var(--testo);color:var(--testo) !important}
 .art-insta{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;background:var(--rosso);color:#EDE8DC !important;text-decoration:none !important;padding:.45rem 1rem;display:inline-flex;align-items:center;gap:.5rem;transition:background .2s}
 .art-insta:hover{background:var(--rosso-h) !important}
-@media(max-width:640px){.art-title{font-size:2rem}.art-hero-img{max-height:240px}}
+@media(max-width:640px){
+  .art-title{font-size:2rem}
+  .art-hero-img{max-height:240px}
+  .art-back,.art-insta{min-height:44px;display:inline-flex;align-items:center}
+  .art-footer{flex-direction:column;align-items:flex-start}
+}
 </style>
 
 <div class="art-wrap">
