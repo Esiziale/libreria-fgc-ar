@@ -1,6 +1,6 @@
 ---
 date: 2026-04-01T22:31:32+02:00
-title: Cineforum
+title: Test Lorenzo
 regista: Tentative
 anno: 1956
 data_proiezione: 2026-04-03T17:44:00.000+02:00
