@@ -215,6 +215,8 @@
   
   
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
 
   
 
@@ -506,11 +508,46 @@
 .ph5{background:#1A0A0A}.ph5 .ph-line{background:#CC1A1A}.ph5 .ph-text{color:#3A1A1A}
 
 @media(max-width:700px){
-  .hp-hero{grid-template-columns:1fr}
-  .hp-hero::before{clip-path:polygon(0 65%,100% 45%,100% 100%,0 100%);width:100%}
-  .hp-title{font-size:3.2rem}
+  .hp-hero{
+    grid-template-columns:1fr;
+    min-height:auto;
+  }
+  .hp-hero::before{
+    clip-path:polygon(0 75%,100% 60%,100% 100%,0 100%);
+    width:100%;
+  }
+  .hp-hero-left{
+    padding:2rem 1.5rem 1.5rem;
+  }
+  .hp-btn-s{
+    border-color:var(--testo) !important;
+    color:var(--testo) !important;
+    background:var(--bg) !important;
+  }
+  .hp-title{font-size:clamp(2.8rem,10vw,3.5rem)}
+  .hp-desc{font-size:.85rem}
+   
+  .hp-hero > div:not(.hp-hero-left):not(.hp-stats){
+    padding:1rem 1.5rem 5.5rem;  
+    min-height:200px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .hp-hero > div:not(.hp-hero-left):not(.hp-stats) img{
+    width:180px !important;
+  }
+   
+  .hs-num{font-size:1.4rem}
+  .hs-lbl{font-size:.48rem}
+  .hp-stati{padding:.5rem .5rem}
+   
   .hp-eventi{grid-template-columns:1fr}
-  .hp-cta-inner{flex-direction:column}
+  .hp-cta-inner{flex-direction:column;text-align:center}
+  .hp-cta-btn{width:100%;text-align:center}
+   
+  .hp-sh{flex-wrap:wrap;gap:.5rem}
+  .hp-sh-link{margin-left:0}
 }
 </style>
 
