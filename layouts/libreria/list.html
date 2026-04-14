@@ -13,7 +13,7 @@
 {{ range $books }}{{ if .Params.disponibile }}{{ $tot_disponibili = add $tot_disponibili 1 }}{{ end }}{{ end }}
 
 <style>
-.lib-wrap{max-width:1200px;margin:0 auto;padding:0 1.5rem 4rem}
+.lib-wrap{max-width:1100px;margin:0 auto;padding:0 1.5rem 4rem}
 .lib-hero{padding:2.5rem 0 2rem;border-bottom:3px solid var(--rosso);margin-bottom:2rem;display:flex;gap:2rem;align-items:flex-start;flex-wrap:wrap}
 .lib-hero-left{flex:1;min-width:220px}
 .lib-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--rosso);margin-bottom:.5rem}
@@ -47,7 +47,7 @@
   border-color:var(--rosso) !important;
   border-left-color:var(--rosso) !important;
   transform:translateY(-3px);
-  box-shadow:3px 3px 0 var(--rosso);
+  box-shadow:0px 3px 0 var(--rosso);
 }
 @media(max-width:640px){
   .book-card:active{transform:translateY(-2px);box-shadow:2px 2px 0 var(--rosso)}
@@ -78,10 +78,11 @@
 }
 .book-author{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--muted)}
 .book-cat{
-  font-family:'IBM Plex Mono',monospace;font-size:.55rem;
-  color:var(--rosso);text-transform:uppercase;letter-spacing:.08em;
-  margin-top:auto;padding-top:.3rem;
-  border-top:1px solid var(--bordo);
+  display:inline-block;align-self:flex-start;
+  font-family:'IBM Plex Mono',monospace;font-size:.5rem;
+  color:var(--testo);text-transform:uppercase;letter-spacing:.08em;
+  margin-top:auto;padding:2px 6px;
+  border:1px solid var(--testo);
 }
 .no-results{grid-column:1/-1;text-align:center;padding:4rem 2rem;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:.85rem}
 
@@ -186,7 +187,6 @@ function placeholder(titolo, numero) {
 <div class="lib-wrap">
   <div class="lib-hero">
     <div class="lib-hero-left">
-      <p class="lib-eyebrow">Fronte della Gioventù Comunista di Arezzo</p>
       <h1 class="lib-title">Libreria Popolare</h1>
       <p class="lib-desc">Un archivio vivo della nostra biblioteca collettiva — titoli, autori, categorie e disponibilità.</p>
     </div>
@@ -249,8 +249,17 @@ function placeholder(titolo, numero) {
 </div>
 
 <script>
+/* Pulizia quote e pre-calcolo placeholder */
+const _strip = s => s.replace(/^["'"'"]+|["'"'"]+$/g, '').trim();
+LIBRI.forEach(b => {
+  b._autore = _strip(b.autore);
+  b._cat    = _strip(b.categoria);
+});
+const _PH = {};
+LIBRI.forEach(b => { _PH[b.numero] = placeholder(b.titolo, b.numero); });
+
 function copertina(b) {
-  return b.copertina || placeholder(b.titolo, b.numero);
+  return b.copertina || _PH[b.numero];
 }
 
 function renderCard(b, i) {
@@ -260,14 +269,14 @@ function renderCard(b, i) {
   return `<div class="book-card disp-${disp}" onclick="apriModal(${i})">
     <div class="book-cover">
       <img src="${copertina(b)}" alt="${b.titolo}" loading="lazy"
-           onerror="this.src='${placeholder(b.titolo, b.numero)}'">
+           onerror="this.src=_PH[${b.numero}];this.onerror=null">
       <div class="book-num-tag">N.${num}</div>
       <div class="book-disp-strip ${disp}">${dispLabel}</div>
     </div>
     <div class="book-info">
       <span class="book-title">${b.titolo}</span>
-      <span class="book-author">${b.autore}</span>
-      <span class="book-cat">${b.categoria}</span>
+      <span class="book-author">${b._autore}</span>
+      <span class="book-cat">${b._cat}</span>
     </div>
   </div>`;
 }
@@ -279,8 +288,8 @@ function filtra() {
   const cat  = document.getElementById('f-cat').value.trim().toLowerCase();
   const disp = document.getElementById('f-disp').value;
   risultatiCorrente = LIBRI.filter(b => {
-    const mQ = !q   || b.titolo.toLowerCase().includes(q) || b.autore.toLowerCase().includes(q);
-    const mC = !cat || b.categoria.trim().toLowerCase() === cat;
+    const mQ = !q   || b.titolo.toLowerCase().includes(q) || b._autore.toLowerCase().includes(q);
+    const mC = !cat || b._cat.toLowerCase() === cat;
     const mD = !disp|| (disp==='si' ? b.disponibile : !b.disponibile);
     return mQ && mC && mD;
   });
@@ -299,9 +308,9 @@ function apriModal(i) {
           onerror="this.src='${placeholder(b.titolo, b.numero)}'">`;
   document.getElementById('modal-num').textContent = `#${b.numero}`;
   document.getElementById('modal-title').textContent = b.titolo;
-  document.getElementById('modal-author').textContent = b.autore;
+  document.getElementById('modal-author').textContent = b._autore;
   document.getElementById('modal-pills').innerHTML =
-    `<span class="modal-pill rosso">${b.categoria}</span>` +
+    `<span class="modal-pill rosso">${b._cat}</span>` +
     (b.disponibile
       ? '<span class="modal-pill verde">Disponibile</span>'
       : '<span class="modal-pill nodisp">Non disponibile</span>');

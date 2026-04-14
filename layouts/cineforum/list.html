@@ -1,0 +1,65 @@
+{{ define "main" }}
+{{ $films := sort .Pages "Params.data_proiezione" "desc" }}
+
+<style>
+.cin-item{display:grid;grid-template-columns:260px 1fr;border:1px solid var(--bordo);border-top:none;background:var(--bg2);transition:border-color .2s}
+.cin-item:first-child{border-top:1px solid var(--bordo)}
+.cin-item:hover{border-color:var(--rosso)}
+.cin-img{overflow:hidden;background:var(--bg3);position:relative}
+.cin-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.cin-item:hover .cin-img img{transform:scale(1.03)}
+.cin-img-ph{width:100%;height:100%;min-height:180px;display:flex;align-items:center;justify-content:center}
+.cin-img-ph span{font-family:'Bebas Neue',sans-serif;font-size:.8rem;color:var(--muted)}
+.cin-content{padding:1.5rem;display:flex;flex-direction:column;gap:.5rem;justify-content:center}
+.cin-meta{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+.cin-data{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.cin-badge{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;background:var(--rosso);color:#EDE8DC}
+.cin-nome{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;line-height:1.05;color:var(--testo);text-decoration:none !important;display:block}
+.cin-nome:hover{color:var(--rosso) !important}
+.cin-regia{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--muted);margin-top:-.2rem}
+.cin-desc{font-family:'IBM Plex Sans',sans-serif;font-size:.88rem;color:var(--muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-top:.2rem}
+.cin-luogo{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--muted);display:flex;align-items:center;gap:.4rem}
+.cin-luogo::before{content:'↦';color:var(--rosso)}
+.cin-btn{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:.4rem .9rem;text-decoration:none;display:inline-block;transition:all .2s;background:none;border:1px solid var(--bordo);color:var(--muted);margin-top:.5rem;align-self:flex-start}
+.cin-btn:hover{border-color:var(--testo);color:var(--testo) !important}
+@media(max-width:640px){
+  .cin-item{grid-template-columns:1fr}
+  .cin-img{max-height:220px}
+}
+</style>
+
+<div class="page-wrap">
+  <div class="page-hero">
+    <h1 class="page-title">Cineforum</h1>
+  </div>
+
+  {{ if $films }}
+  <div style="display:flex;flex-direction:column;gap:0">
+    {{ range $films }}
+    <div class="cin-item">
+      <div class="cin-img">
+        {{ if .Params.immagine }}
+        <img src="{{ .Params.immagine }}" alt="{{ .Title }}" loading="lazy">
+        {{ else }}
+        <div class="cin-img-ph"><span>{{ .Title | truncate 25 }}</span></div>
+        {{ end }}
+      </div>
+      <div class="cin-content">
+        <div class="cin-meta">
+          {{ with .Params.data_proiezione }}<span class="cin-data">{{ dateFormat "02 Jan 2006" . }}</span>{{ end }}
+          {{ with .Params.orario }}<span class="cin-badge">{{ . }}</span>{{ end }}
+        </div>
+        <a href="{{ .Permalink }}" class="cin-nome">{{ .Title }}</a>
+        {{ with .Params.regia }}<span class="cin-regia">Regia: {{ . }}</span>{{ end }}
+        {{ with .Summary }}<p class="cin-desc">{{ . | plainify }}</p>{{ end }}
+        {{ with .Params.luogo }}<span class="cin-luogo">{{ . }}</span>{{ end }}
+        <a href="{{ .Permalink }}" class="cin-btn">Leggi →</a>
+      </div>
+    </div>
+    {{ end }}
+  </div>
+  {{ else }}
+  <div class="page-empty">Nessuna proiezione in programma al momento.</div>
+  {{ end }}
+</div>
+{{ end }}

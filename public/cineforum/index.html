@@ -90,8 +90,8 @@
   <link
     type="text/css"
     rel="stylesheet"
-    href="/css/main.bundle.min.5928bc57888ce0914e1577c82f43ec4064aec73cf7ba2e87b6f901acdb7a553dfbc8cbe0fedac9980875ed45bb236142a8de483da33d72116c11e712a34e1777.css"
-    integrity="sha512-WSi8V4iM4JFOFXfIL0PsQGSuxzz3ui6HtvkBrNt6VT37yMvg/trJmAh17UW7I2FCqN5IPaM9chFsEecSo04Xdw==">
+    href="/css/main.bundle.min.fde8d60138029b620454713e2274d57307a2d32d9d5df223cb8ed6272f45cba970931725739aa29543ca535f937ec78fcbce11b11ea490b36ba3408e18c508e9.css"
+    integrity="sha512-/ejWATgCm2IEVHE&#43;InTVcwei0y2dXfIjy47WJy9Fy6lwkxclc5qilUPKU1&#43;TfsePy84RsR6kkLNro0COGMUI6Q==">
 
   
   
@@ -184,10 +184,9 @@
 
   
   
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
+
   
 
   
@@ -226,8 +225,8 @@
   
   
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-<link rel="icon" type="image/png" href="/favicon.png">
-<link rel="apple-touch-icon" href="/favicon.png">
+<link rel="icon" type="image/png" href="/favicon.png?v=2">
+<link rel="apple-touch-icon" href="/favicon.png?v=2">
 
   
 
@@ -585,68 +584,44 @@
     <div class="relative flex flex-col grow">
       <main id="main-content" class="grow">
         
-  
-  
-  
-
-  
-  
-
-  
-  <header>
-    
-    <h1 class="mt-5 text-4xl font-extrabold text-neutral-900 dark:text-neutral">Cineforum</h1>
-    <div class="mt-1 mb-2 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
-      
 
 
+<style>
+.cin-item{display:grid;grid-template-columns:260px 1fr;border:1px solid var(--bordo);border-top:none;background:var(--bg2);transition:border-color .2s}
+.cin-item:first-child{border-top:1px solid var(--bordo)}
+.cin-item:hover{border-color:var(--rosso)}
+.cin-img{overflow:hidden;background:var(--bg3);position:relative}
+.cin-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.cin-item:hover .cin-img img{transform:scale(1.03)}
+.cin-img-ph{width:100%;height:100%;min-height:180px;display:flex;align-items:center;justify-content:center}
+.cin-img-ph span{font-family:'Bebas Neue',sans-serif;font-size:.8rem;color:var(--muted)}
+.cin-content{padding:1.5rem;display:flex;flex-direction:column;gap:.5rem;justify-content:center}
+.cin-meta{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+.cin-data{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.cin-badge{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;background:var(--rosso);color:#EDE8DC}
+.cin-nome{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;line-height:1.05;color:var(--testo);text-decoration:none !important;display:block}
+.cin-nome:hover{color:var(--rosso) !important}
+.cin-regia{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--muted);margin-top:-.2rem}
+.cin-desc{font-family:'IBM Plex Sans',sans-serif;font-size:.88rem;color:var(--muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-top:.2rem}
+.cin-luogo{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--muted);display:flex;align-items:center;gap:.4rem}
+.cin-luogo::before{content:'↦';color:var(--rosso)}
+.cin-btn{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:.4rem .9rem;text-decoration:none;display:inline-block;transition:all .2s;background:none;border:1px solid var(--bordo);color:var(--muted);margin-top:.5rem;align-self:flex-start}
+.cin-btn:hover{border-color:var(--testo);color:var(--testo) !important}
+@media(max-width:640px){
+  .cin-item{grid-template-columns:1fr}
+  .cin-img{max-height:220px}
+}
+</style>
 
-
-
-  
-  
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-  <div class="flex flex-row flex-wrap items-center">
-    
-    
+<div class="page-wrap">
+  <div class="page-hero">
+    <h1 class="page-title">Cineforum</h1>
   </div>
 
-
-    </div>
-  </header>
-
   
+  <div class="page-empty">Nessuna proiezione in programma al momento.</div>
   
-  
-  <section class="mt-0 prose flex max-w-full flex-col dark:prose-invert lg:flex-row mb-10">
-    
-    <div class="min-w-0 min-h-0 max-w-prose w-full">
-      
-    </div>
-  </section>
-
-  
-  
-    <section class="mt-10 prose dark:prose-invert">
-      <p class="py-8 border-t">
-        <em>Non ci sono ancora articoli da elencare</em>
-      </p>
-    </section>
-  
-  
+</div>
 
         
 
