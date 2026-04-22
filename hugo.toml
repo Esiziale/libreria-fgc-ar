@@ -21,6 +21,7 @@ theme = 'blowfish'
 [params.article]
   showDate = false
   showReadingTime = false
+  showWordCount = false
   
 [[menus.main]]
   name = 'Libreria'
