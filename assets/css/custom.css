@@ -317,7 +317,7 @@ a.ev-item, a.ev-item * { text-decoration: none !important; }
   .page-wrap { padding: 0 1.25rem 3rem; }
 }
 /* ── HEADER PADDING ── */
-header .main-menu {
+.main-menu {
   padding-top: 0.75rem !important;
   padding-bottom: 0.75rem !important;
 }
