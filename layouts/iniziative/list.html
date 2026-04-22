@@ -1,73 +1,127 @@
 {{ define "main" }}
 {{ $iniziative := sort .Pages "Params.date" "desc" }}
+{{ $featured := index $iniziative 0 }}
+{{ $resto := after 1 $iniziative }}
 
 <style>
-.ini-wrap{max-width:1100px;margin:0 auto;padding:0 1.5rem 4rem}
-.ini-hero{padding:2rem 0 1.5rem;border-bottom:3px solid var(--rosso);margin-bottom:2.5rem}
+.ini-wrap{max-width:1000px;margin:0 auto;padding:0 1.5rem 5rem}
+.ini-hero{padding:2rem 0 1.5rem;border-bottom:3px solid var(--rosso);margin-bottom:0}
 .ini-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rosso);margin-bottom:.3rem}
 .ini-title{font-family:'Bebas Neue',sans-serif;font-size:3rem;line-height:1;color:var(--testo);margin:0}
 
-.ini-list{display:flex;flex-direction:column;gap:0}
-.ini-item{display:grid;grid-template-columns:280px 1fr;border:1px solid var(--bordo);border-top:none;background:var(--bg2);transition:border-color .2s}
-.ini-item:first-child{border-top:1px solid var(--bordo)}
-.ini-item:hover{border-color:var(--rosso)}
+.ini-list{display:flex;flex-direction:column}
 
-.ini-img{overflow:hidden;background:var(--bg3);position:relative;flex-shrink:0}
-.ini-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
-.ini-item:hover .ini-img img{transform:scale(1.03)}
-.ini-img-ph{width:100%;height:100%;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;padding:1rem}
-.ini-img-ph .ph-line{width:40px;height:2px;background:var(--rosso);opacity:.4}
-.ini-img-ph span{font-family:'Bebas Neue',sans-serif;font-size:.9rem;color:var(--muted);text-align:center;line-height:1.2}
-
-/* Badge Instagram angolo */
-.ini-insta-badge{
-  position:absolute;bottom:.6rem;left:.6rem;
-  background:var(--rosso);
-  width:30px;height:30px;
-  display:flex;align-items:center;justify-content:center;
-  text-decoration:none;
-  transition:transform .2s,background .2s;
+.ini-item{
+  display:grid;
+  grid-template-columns:420px 1fr;
+  border-bottom:1px solid var(--bordo);
+  border-left:4px solid transparent;
+  background:var(--bg);
+  cursor:pointer;
+  transition:border-left-color .2s,background .15s;
+  color:inherit;
+  position:relative;
 }
-.ini-insta-badge:hover{transform:scale(1.1);background:var(--rosso-h) !important}
+.ini-item:hover{border-left-color:var(--rosso);background:var(--bg2)}
+.ini-item:first-child{border-top:1px solid var(--bordo)}
 
-.ini-content{padding:1.5rem;display:flex;flex-direction:column;gap:.5rem;justify-content:center}
-.ini-meta{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
-.ini-data{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.ini-badge{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;background:var(--testo);color:var(--bg)}
+.ini-img{
+  position:relative;overflow:hidden;
+  background:var(--bg3);
+  min-height:220px;
+}
+.ini-img img{
+  position:absolute;inset:0;
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .35s ease;
+}
+.ini-item:hover .ini-img img{transform:scale(1.04)}
 
-.ini-nome{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;line-height:1.05;color:var(--testo);text-decoration:none !important;display:block}
-.ini-nome:hover{color:var(--rosso) !important}
-.ini-sottotitolo{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:.05em;margin-top:-.2rem}
+.ini-ph{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.ini-ph-bg{position:absolute;inset:0;background:#1A1A1A}
+.ini-ph-diag{
+  position:absolute;bottom:-20%;right:-10%;
+  width:70%;height:140%;
+  background:var(--rosso);opacity:.18;
+  transform:rotate(-12deg);transform-origin:bottom right;
+}
+.ini-ph-text{
+  position:relative;z-index:1;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(1.2rem,3vw,2rem);
+  color:rgba(255,255,255,.12);
+  letter-spacing:.08em;text-align:center;
+  padding:1.5rem;line-height:1.15;word-break:break-word;
+}
 
-.ini-desc{font-family:'IBM Plex Sans',sans-serif;font-size:.88rem;color:var(--muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-top:.2rem}
-.ini-luogo{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--muted);display:flex;align-items:center;gap:.4rem}
-.ini-luogo::before{content:'↦';color:var(--rosso)}
+.ini-num{
+  position:absolute;top:0;left:0;z-index:2;
+  font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:.15em;
+  background:rgba(0,0,0,.65);color:rgba(255,255,255,.6);padding:3px 8px;
+}
+.ini-ig{
+  position:absolute;bottom:.75rem;right:.75rem;z-index:2;
+  width:32px;height:32px;
+  background:var(--rosso);
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;transition:background .2s,transform .2s;
+}
+.ini-ig:hover{background:var(--rosso-h) !important;transform:scale(1.08)}
 
-.ini-actions{display:flex;gap:.6rem;margin-top:.5rem;flex-wrap:wrap;align-items:center}
-.ini-btn{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:.4rem .9rem;text-decoration:none;display:inline-block;transition:all .2s}
-.ini-btn-dettagli{background:none;border:1px solid var(--bordo);color:var(--muted)}
-.ini-btn-dettagli:hover{border-color:var(--testo);color:var(--testo) !important}
-.ini-btn-insta{background:var(--rosso);color:#EDE8DC !important;border:1px solid var(--rosso);display:flex;align-items:center;gap:.4rem}
-.ini-btn-insta:hover{background:var(--rosso-h) !important;border-color:var(--rosso-h) !important}
+.ini-content{
+  padding:1.75rem 2rem 1.75rem 1.75rem;
+  display:flex;flex-direction:column;gap:.5rem;justify-content:center;
+}
+.ini-meta{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-bottom:.15rem}
+.ini-data{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ini-orario{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;background:var(--testo);color:var(--bg);padding:3px 9px}
+.ini-nome{font-family:'Bebas Neue',sans-serif !important;font-size:clamp(1.8rem,3vw,2.6rem);line-height:1 !important;color:var(--testo) !important;letter-spacing:.02em;margin:0 !important}
+.ini-sub{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:.04em;margin-top:-.1rem}
+.ini-desc{font-family:'IBM Plex Sans',sans-serif;font-size:.93rem;color:var(--testo2);line-height:1.7;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-top:.2rem}
+.ini-luogo{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--muted);display:flex;align-items:center;gap:.35rem;margin-top:.2rem}
+.ini-luogo::before{content:none}
+.ini-cta{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--rosso);margin-top:auto;padding-top:.75rem;display:flex;align-items:center;gap:.35rem}
+.ini-cta::after{content:'→';transition:transform .2s}
+.ini-item:hover .ini-cta::after{transform:translateX(4px)}
+
+/* FEATURED — !important su tutto per battere Blowfish */
+.ini-item.featured{
+  grid-template-columns:1fr;
+  border-left:4px solid var(--rosso);
+}
+.ini-item.featured .ini-img{height:360px}
+.ini-item.featured .ini-content{padding:1.75rem 2rem;background:#0A0A0A !important}
+.ini-item.featured .ini-nome{font-size:clamp(2.2rem,5vw,3.5rem) !important;color:#EDE8DC !important;margin:0 !important}
+.ini-item.featured .ini-sub{color:rgba(237,232,220,.65) !important;font-size:.75rem}
+.ini-item.featured .ini-data{color:rgba(237,232,220,.6) !important;font-size:.68rem}
+.ini-item.featured .ini-orario{background:var(--rosso) !important;color:#EDE8DC !important;border:none}
+.ini-item.featured .ini-desc{color:rgba(237,232,220,.8) !important;font-size:.95rem}
+.ini-item.featured .ini-luogo{color:rgba(237,232,220,.55) !important}
+.ini-item.featured .ini-luogo::before{content:none}
+.ini-item.featured .ini-cta{color:var(--rosso) !important}
+.ini-feat-badge{
+  font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;
+  background:var(--rosso);color:#EDE8DC;padding:3px 9px;
+  align-self:flex-start;margin-bottom:.25rem;
+}
 
 .ini-empty{font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--muted);text-align:center;padding:3rem;border:1px solid var(--bordo)}
 
-@media(max-width:640px){
+@media(max-width:700px){
   .ini-title{font-size:2.2rem}
   .ini-item{grid-template-columns:1fr}
-  .ini-img{max-height:200px}
-  .ini-content{padding:1rem}
-  .ini-btn{min-height:44px;display:inline-flex;align-items:center}
-}
-a.ini-btn-insta,
-a.ini-btn-insta:visited {
-  background: var(--rosso) !important;
-  color: #EDE8DC !important;
-  border-color: var(--rosso) !important;
-}
-a.ini-insta-badge {
-  display: flex !important;
-  color: #EDE8DC !important;
+  .ini-item.featured .ini-img{height:220px}
+  .ini-img{height:200px}
+  .ini-content{padding:1.25rem 1.25rem 1.5rem}
+  .ini-item.featured .ini-content{padding:1.25rem}
+  .ini-nome{font-size:1.6rem !important}
+  .ini-item.featured .ini-nome{font-size:1.9rem !important}
+  .ini-desc{-webkit-line-clamp:2;line-clamp:2}
+  .ini-ig{width:40px;height:40px}
 }
 </style>
 
@@ -76,68 +130,84 @@ a.ini-insta-badge {
     <h1 class="ini-title">Le nostre iniziative</h1>
   </div>
 
-  {{ if $iniziative }}
+  {{ if not $iniziative }}
+  <div class="ini-empty">Nessuna iniziativa in programma al momento.</div>
+  {{ else }}
   <div class="ini-list">
-    {{ range $iniziative }}
-    {{ $insta := .Params.instagram }}
-    <div class="ini-item">
 
+    {{/* FEATURED */}}
+    {{ with $featured }}
+    {{ $insta := .Params.instagram }}
+    {{ $i := 1 }}
+    <div class="ini-item featured" onclick="location.href='{{ .Permalink }}'">
       <div class="ini-img">
         {{ if .Params.immagine }}
-        <img src="{{ .Params.immagine }}" alt="{{ .Title }}" loading="lazy">
+        <img src="{{ .Params.immagine }}" alt="{{ .Title }}" loading="eager">
         {{ else }}
-        <div class="ini-img-ph">
-          <div class="ph-line"></div>
-          <span>{{ .Title | truncate 30 }}</span>
-          <div class="ph-line"></div>
+        <div class="ini-ph">
+          <div class="ini-ph-bg"></div>
+          <div class="ini-ph-diag"></div>
+          <span class="ini-ph-text">{{ .Title | upper }}</span>
         </div>
         {{ end }}
+        <span class="ini-num">01 — {{ with .Params.date }}{{ dateFormat "2006" . }}{{ end }}</span>
         {{ with $insta }}
-        <a href="{{ . }}" target="_blank" rel="noopener" class="ini-insta-badge" title="Vedi su Instagram">
+        <a href="{{ . }}" target="_blank" rel="noopener" class="ini-ig" onclick="event.stopPropagation()" title="Vedi su Instagram">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#EDE8DC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#EDE8DC" stroke="none"/></svg>
         </a>
         {{ end }}
       </div>
-
       <div class="ini-content">
+        <span class="ini-feat-badge">★ Ultima iniziativa</span>
         <div class="ini-meta">
-          {{ with .Params.date }}
-          <span class="ini-data">{{ dateFormat "02 Jan 2006" . }}</span>
-          {{ end }}
-          {{ with .Params.orario }}
-          <span class="ini-badge">{{ . }}</span>
-          {{ end }}
+          {{ with .Params.date }}<span class="ini-data">{{ dateFormat "02 Jan 2006" . }}</span>{{ end }}
+          {{ with .Params.orario }}<span class="ini-orario">{{ . }}</span>{{ end }}
         </div>
-
-        <a href="{{ .Permalink }}" class="ini-nome">{{ .Title }}</a>
-        {{ with .Params.sottotitolo }}
-        <span class="ini-sottotitolo">{{ . }}</span>
-        {{ end }}
-
-        {{ with .Summary }}
-        <p class="ini-desc">{{ . | plainify }}</p>
-        {{ end }}
-
-        {{ with .Params.luogo }}
-        <span class="ini-luogo">{{ . }}</span>
-        {{ end }}
-
-        <div class="ini-actions">
-          <a href="{{ .Permalink }}" class="ini-btn ini-btn-dettagli">Leggi →</a>
-          {{ with $insta }}
-          <a href="{{ . }}" target="_blank" rel="noopener" class="ini-btn ini-btn-insta">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-            Vedi su Instagram
-          </a>
-          {{ end }}
-        </div>
+        <h2 class="ini-nome">{{ .Title }}</h2>
+        {{ with .Params.sottotitolo }}<span class="ini-sub">{{ . }}</span>{{ end }}
+        {{ with .Summary }}<p class="ini-desc">{{ . | plainify }}</p>{{ end }}
+        {{ with .Params.luogo }}<span class="ini-luogo">{{ . }}</span>{{ end }}
+        <span class="ini-cta">Leggi l'iniziativa</span>
       </div>
-
     </div>
     {{ end }}
+
+    {{/* RESTO */}}
+    {{ range $i, $p := $resto }}
+    {{ $insta := $p.Params.instagram }}
+    <div class="ini-item" onclick="location.href='{{ $p.Permalink }}'">
+      <div class="ini-img">
+        {{ if $p.Params.immagine }}
+        <img src="{{ $p.Params.immagine }}" alt="{{ $p.Title }}" loading="lazy">
+        {{ else }}
+        <div class="ini-ph">
+          <div class="ini-ph-bg"></div>
+          <div class="ini-ph-diag"></div>
+          <span class="ini-ph-text">{{ $p.Title | upper }}</span>
+        </div>
+        {{ end }}
+        <span class="ini-num">{{ printf "%02d" (add $i 2) }} — {{ with $p.Params.date }}{{ dateFormat "2006" . }}{{ end }}</span>
+        {{ with $insta }}
+        <a href="{{ . }}" target="_blank" rel="noopener" class="ini-ig" onclick="event.stopPropagation()" title="Vedi su Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#EDE8DC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#EDE8DC" stroke="none"/></svg>
+        </a>
+        {{ end }}
+      </div>
+      <div class="ini-content">
+        <div class="ini-meta">
+          {{ with $p.Params.date }}<span class="ini-data">{{ dateFormat "02 Jan 2006" . }}</span>{{ end }}
+          {{ with $p.Params.orario }}<span class="ini-orario">{{ . }}</span>{{ end }}
+        </div>
+        <h3 class="ini-nome">{{ $p.Title }}</h3>
+        {{ with $p.Params.sottotitolo }}<span class="ini-sub">{{ . }}</span>{{ end }}
+        {{ with $p.Summary }}<p class="ini-desc">{{ . | plainify }}</p>{{ end }}
+        {{ with $p.Params.luogo }}<span class="ini-luogo">{{ . }}</span>{{ end }}
+        <span class="ini-cta">Leggi l'iniziativa</span>
+      </div>
+    </div>
+    {{ end }}
+
   </div>
-  {{ else }}
-  <div class="ini-empty">Nessuna iniziativa in programma al momento.</div>
   {{ end }}
 </div>
 

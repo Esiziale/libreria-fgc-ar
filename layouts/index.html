@@ -7,7 +7,7 @@
 {{ $iniziative := (site.GetPage "iniziative").Pages }}
 {{ $cineforum  := (site.GetPage "cineforum").Pages }}
 {{ $tutti := $iniziative | append $cineforum }}
-{{ $eventi := sort $tutti "Params.date" | first 4 }}
+{{ $eventi := sort $tutti "Params.date" "desc" | first 4 }}
 
 {{/* Statistiche libreria */}}
 {{ $tot_libri := len (site.GetPage "libreria").Pages }}

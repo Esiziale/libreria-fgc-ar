@@ -2,66 +2,157 @@
 {{ $insta := .Params.instagram }}
 
 <style>
-.art-wrap{max-width:860px;margin:0 auto;padding:0 1.5rem 4rem}
-.art-hero-img{width:100%;max-height:420px;object-fit:cover;display:block;margin-bottom:2rem}
-.art-header{padding:1.75rem 0 1.5rem;border-bottom:3px solid var(--rosso);margin-bottom:2rem}
-.art-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rosso);margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
-.art-eyebrow a{color:var(--rosso) !important;text-decoration:none !important}
-.art-eyebrow a:hover{text-decoration:underline !important}
-.art-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,6vw,3.8rem);line-height:1;color:var(--testo);margin:0 0 .4rem}
-.art-sottotitolo{font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--muted);margin-bottom:1rem}
-.art-meta{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-top:.75rem}
-.art-pill-data{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;background:var(--bg2);border:1px solid var(--bordo);color:var(--muted)}
-.art-pill-orario{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;background:var(--testo);color:var(--bg)}
-.art-luogo{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--muted);display:flex;align-items:center;gap:.35rem}
-.art-luogo::before{content:'↦';color:var(--rosso)}
-.art-body{font-family:'IBM Plex Sans',sans-serif;font-size:1rem;line-height:1.8;color:var(--testo2)}
-.art-body p{margin-bottom:1.25rem}
-.art-body strong{color:var(--testo);font-weight:600}
-.art-footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--bordo);display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;justify-content:space-between}
-.art-back{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted) !important;text-decoration:none !important;border:1px solid var(--bordo);padding:.45rem 1rem;transition:all .2s;display:inline-block}
-.art-back:hover{border-color:var(--testo);color:var(--testo) !important}
-.art-insta{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;background:var(--rosso);color:#EDE8DC !important;text-decoration:none !important;padding:.45rem 1rem;display:inline-flex;align-items:center;gap:.5rem;transition:background .2s}
-.art-insta:hover{background:var(--rosso-h) !important}
-@media(max-width:640px){
-  .art-title{font-size:2rem}
-  .art-hero-img{max-height:240px}
-  .art-back,.art-insta{min-height:44px;display:inline-flex;align-items:center}
-  .art-footer{flex-direction:column;align-items:flex-start}
+.sng-outer{max-width:1050px;margin:0 auto;padding:0 1.5rem 5rem}
+
+/* ── DESKTOP: poster+info sx | testo dx ── */
+.sng-grid{
+  display:grid;
+  grid-template-columns:360px 1fr;
+  gap:3.5rem;
+  align-items:start;
+  padding-top:2.5rem;
+}
+
+/* colonna sinistra: immagine + info */
+.sng-left{display:flex;flex-direction:column;gap:1.25rem}
+
+.sng-poster img{width:100%;height:auto;display:block;border:2px solid var(--bordo)}
+.sng-poster-ph{
+  width:100%;aspect-ratio:3/4;
+  background:linear-gradient(135deg,#1A1A1A 60%,#CC1A1A);
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--bordo);
+}
+.sng-poster-ph span{
+  font-family:'Bebas Neue',sans-serif;font-size:1.5rem;
+  color:rgba(255,255,255,.1);text-align:center;padding:1.5rem;line-height:1.2;
+}
+
+.sng-eyebrow{
+  font-family:'IBM Plex Mono',monospace;font-size:.62rem;
+  letter-spacing:.2em;text-transform:uppercase;
+  display:flex;align-items:center;gap:.4rem;
+}
+.sng-eyebrow a{color:var(--rosso) !important;text-decoration:none !important}
+.sng-eyebrow a:hover{text-decoration:underline !important}
+.sng-eyebrow span{color:var(--muted)}
+
+.sng-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2rem,3.5vw,2.8rem);
+  line-height:.95;
+  color:var(--testo);
+  letter-spacing:.02em;
+  margin:0 !important;padding:0 !important;
+}
+.sng-sub{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.72rem;color:var(--muted);
+  letter-spacing:.04em;margin-top:.4rem;
+}
+.sng-divider-r{width:40px;height:3px;background:var(--rosso)}
+
+.sng-meta{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.sng-pill{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;padding:4px 11px}
+.sng-pill-data{background:var(--bg2);border:1px solid var(--bordo);color:var(--muted)}
+.sng-pill-orario{background:var(--testo);color:var(--bg)}
+.sng-luogo{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.03em}
+
+.sng-insta{
+  font-family:'IBM Plex Mono',monospace;font-size:.68rem;
+  letter-spacing:.12em;text-transform:uppercase;
+  background:var(--rosso);color:#EDE8DC !important;
+  text-decoration:none !important;
+  padding:.6rem 1.2rem;
+  display:inline-flex;align-items:center;gap:.5rem;
+  transition:background .2s;
+}
+.sng-insta:hover{background:var(--rosso-h) !important;color:#EDE8DC !important}
+
+.sng-back{
+  font-family:'IBM Plex Mono',monospace;font-size:.65rem;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted) !important;text-decoration:none !important;
+  border:1px solid var(--bordo);padding:.45rem 1rem;
+  transition:all .2s;display:inline-flex;align-items:center;gap:.4rem;
+  align-self:flex-start;
+}
+.sng-back:hover{border-color:var(--testo);color:var(--testo) !important}
+
+/* colonna destra: solo corpo testo */
+.sng-right{
+  padding-top:.25rem;
+  border-left:1px solid var(--bordo);
+  padding-left:3rem;
+}
+.sng-body{
+  font-family:'IBM Plex Sans',sans-serif;
+  font-size:.97rem;line-height:1.9;color:var(--testo2);
+}
+.sng-body p{margin-bottom:1.35rem}
+.sng-body p:last-child{margin-bottom:0}
+.sng-body strong{color:var(--testo);font-weight:600}
+
+/* ── MOBILE: tutto in colonna ── */
+@media(max-width:700px){
+  .sng-grid{
+    grid-template-columns:1fr;
+    gap:1.5rem;
+    padding-top:1.25rem;
+  }
+  .sng-right{
+    border-left:none;padding-left:0;
+    border-top:1px solid var(--bordo);
+    padding-top:1.5rem;
+  }
+  .sng-title{font-size:2.2rem !important}
+  .sng-insta{width:100%;justify-content:center}
+  .sng-back{min-height:44px}
 }
 </style>
 
-<div class="art-wrap">
+<div class="sng-outer">
+  <div class="sng-grid">
 
-  {{ if .Params.immagine }}
-  <img class="art-hero-img" src="{{ .Params.immagine }}" alt="{{ .Title }}">
-  {{ end }}
+    <!-- SINISTRA: poster + meta -->
+    <div class="sng-left">
+      <div class="sng-poster">
+        {{ if .Params.immagine }}
+        <img src="{{ .Params.immagine }}" alt="{{ .Title }}">
+        {{ else }}
+        <div class="sng-poster-ph"><span>{{ .Title | upper }}</span></div>
+        {{ end }}
+      </div>
 
-  <div class="art-header">
-    <div class="art-eyebrow">
-      <span>←</span>
-      <a href="/iniziative/">Le nostre iniziative</a>
+      <div class="sng-meta">
+        {{ with .Params.date }}<span class="sng-pill sng-pill-data">{{ dateFormat "02 Jan 2006" . }}</span>{{ end }}
+        {{ with .Params.orario }}<span class="sng-pill sng-pill-orario">{{ . }}</span>{{ end }}
+        {{ with .Params.luogo }}<span class="sng-luogo">{{ . }}</span>{{ end }}
+      </div>
+
+      {{ with $insta }}
+      <a href="{{ . }}" target="_blank" rel="noopener" class="sng-insta">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        Vedi su Instagram
+      </a>
+      {{ end }}
+
+      <a href="/iniziative/" class="sng-back">← Torna alle iniziative</a>
     </div>
-    <h1 class="art-title">{{ .Title }}</h1>
-    {{ with .Params.sottotitolo }}<p class="art-sottotitolo">{{ . }}</p>{{ end }}
-    <div class="art-meta">
-      {{ with .Params.date }}<span class="art-pill-data">{{ dateFormat "02 Jan 2006" . }}</span>{{ end }}
-      {{ with .Params.orario }}<span class="art-pill-orario">{{ . }}</span>{{ end }}
-      {{ with .Params.luogo }}<span class="art-luogo">{{ . }}</span>{{ end }}
+
+    <!-- DESTRA: eyebrow + titolo + testo -->
+    <div class="sng-right">
+      <div class="sng-eyebrow">
+        <span>←</span>
+        <a href="/iniziative/">Le nostre iniziative</a>
+      </div>
+      <h1 class="sng-title" style="font-family:'Bebas Neue',sans-serif">{{ .Title }}</h1>
+      {{ with .Params.sottotitolo }}<p class="sng-sub">{{ . }}</p>{{ end }}
+      <div class="sng-divider-r" style="margin-bottom:1.5rem"></div>
+      <div class="sng-body">{{ .Content }}</div>
     </div>
+
   </div>
-
-  <div class="art-body">{{ .Content }}</div>
-
-  <div class="art-footer">
-    <a href="/iniziative/" class="art-back">← Torna alle iniziative</a>
-    {{ with $insta }}
-    <a href="{{ . }}" target="_blank" rel="noopener" class="art-insta">
-      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-      Vedi su Instagram
-    </a>
-    {{ end }}
-  </div>
-
 </div>
+
 {{ end }}

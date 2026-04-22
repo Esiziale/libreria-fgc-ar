@@ -171,7 +171,7 @@ const EVENTI = [
   {tipo:"cineforum",titolo:{{ .Title | jsonify }},data:{{ .Params.data_proiezione | time.Format "2006-01-02" | jsonify }},orario:{{ .Params.orario | default "" | jsonify }},luogo:{{ .Params.luogo | default "" | jsonify }},url:{{ .Permalink | jsonify }}},
   {{ end }}{{ end }}
 ];
-EVENTI.sort((a,b)=>new Date(a.data)-new Date(b.data));
+EVENTI.sort((a,b)=>new Date(b.data)-new Date(a.data));
 
 const MESI_IT=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
 const MESI_BR=['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];

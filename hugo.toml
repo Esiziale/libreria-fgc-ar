@@ -11,6 +11,7 @@ theme = 'blowfish'
   autoSwitchAppearance = true
   enableSearch = true
   showScrollToTop = true
+  logo = "images/logo_vet.png"
 
 [params.homepage]
   layout = 'custom'
